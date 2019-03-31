@@ -1,0 +1,62 @@
+<form>
+  <label>Incident Information</label>
+  <init>
+    <set token="id_tkn"></set>
+    <set token="policy_tkn"></set>
+    <set token="type_tkn"></set>
+    <set token="item_type_tkn"></set>
+    <set token="severity_tkn"></set>
+  </init>
+  <fieldset autoRun="true" submitButton="true">
+    <input id="time_id" type="time">
+      <label>Time</label>
+      <default>Last 24 hours</default>
+    </input>
+    <input id="investigation_id" token="id_tkn" type="text">
+      <label>ID</label>
+      <default></default>
+      <prefix>id="</prefix>
+      <suffix>"</suffix>
+    </input>
+    <input type="text" token="policy_tkn" searchWhenChanged="false">
+      <label>Policy</label>
+      <prefix>policies{}="</prefix>
+      <suffix>"</suffix>
+    </input>
+    <input type="text" token="type_tkn">
+      <label>Incident Type</label>
+      <prefix>type="</prefix>
+      <suffix>"</suffix>
+    </input>
+    <input type="text" token="item_type_tkn">
+      <label>Item-Type</label>
+      <prefix>item.type="</prefix>
+      <suffix>"</suffix>
+    </input>
+    <input type="multiselect" token="severity_tkn">
+      <label>Severity</label>
+      <choice value="&quot;7&quot;,&quot;8&quot;,&quot;9&quot;">High</choice>
+      <choice value="&quot;4&quot;,&quot;5&quot;,&quot;6&quot;">Medium</choice>
+      <choice value="&quot;1&quot;,&quot;2&quot;,&quot;3&quot;">Low</choice>
+      <choice value="&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;">All</choice>
+      <prefix>| Where severity in ( </prefix>
+      <suffix>)</suffix>
+      <delimiter> ,</delimiter>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table id="element1">
+        <search>
+          <query>`egnyte_get_index`| eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S") | eval Updated=strftime(updated/1000,"%Y-%m-%d %H:%M:%S") $severity_tkn$ | eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low") | search $id_tkn$ |search $policy_tkn$ |search $type_tkn$ | search $item_type_tkn$  | table id,Detected,Updated,item.displayName,item.type,policies{},Severity,source,status,type</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

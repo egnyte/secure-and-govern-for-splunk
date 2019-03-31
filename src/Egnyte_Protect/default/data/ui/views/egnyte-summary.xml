@@ -1,0 +1,156 @@
+<form>
+  <label>Incidents Summary</label>
+  <init>
+    <set token="severitytkn"></set>
+    <set token="typetkn"></set>
+    <set token="srctkn"></set>
+  </init>
+  <search id="baseSearch">
+    <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,type,updated</query>
+    <earliest>$field1.earliest$</earliest>
+    <latest>$field1.latest$</latest>
+  </search>
+  <fieldset submitButton="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>Total Issues</title>
+        <search base="baseSearch">
+          <query>| stats dc(id) as Count</query>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/Egnyte_Protect/incident_detail</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>High Severity</title>
+        <search base="baseSearch">
+          <query>| where severity &gt; 6 | stats dc(id) as Count</query>
+        </search>
+        <option name="colorMode">none</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x53a051","0xFF6566"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <link target="_blank">/app/Egnyte_Protect/incident_detail?form.severity_tkn=%227%22%252C%228%22%252C%229%22&amp;earliest=$earliest$&amp;latest=$latest$</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Medium Severity</title>
+        <search base="baseSearch">
+          <query>| where severity &gt; 3 AND severity &lt; 7 | stats dc(id) as Count</query>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x53a051","0xFEC946"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <link target="_blank">/app/Egnyte_Protect/incident_detail?form.severity_tkn=%224%22,%225%22,%226%22&amp;earliest=$earliest$&amp;latest=$latest$</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Low Severity</title>
+        <search base="baseSearch">
+          <query>| where severity &lt; 4 | stats dc(id) as Count</query>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x53a051","0xB7C7DE"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <link target="_blank">/app/Egnyte_Protect/incident_detail?form.severity_tkn=%221%22,%222%22,%223%22&amp;earliest=$earliest$&amp;latest=$latest$</link>
+        </drilldown>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Incidents Reported over Time</title>
+      <chart>
+        <search base="baseSearch">
+          <query>| search status=OPEN | eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low") | timechart count by Severity</query>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="charting.fieldColors">{"High":0xFF6566,"Medium":0xFEC946,"Low":0xB7C7DE}</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Open Issues By Severity</title>
+      <chart>
+        <search base="baseSearch">
+          <query>|search status=OPEN | eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low") | stats dc(id) as count by Severity</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">all</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <set token="severitytkn">Severity="$click.value$"</set>
+        </drilldown>
+      </chart>
+    </panel>
+    <panel>
+      <title>Open Issues by Type</title>
+      <chart>
+        <search base="baseSearch">
+          <query>| search status=OPEN | eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low")| search $severitytkn$ | search $srctkn$ | stats dc(id) as count by type</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">all</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <set token="typetkn">type=$click.value$</set>
+        </drilldown>
+      </chart>
+    </panel>
+    <panel>
+      <title>Open Issues by Source</title>
+      <chart>
+        <search base="baseSearch">
+          <query>| search status=OPEN  | eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low")| search $severitytkn$ | search $typetkn$ | stats dc(id) as count by source</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">all</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <set token="srctkn">source="$click.value$"</set>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Incidents Summary</title>
+      <table>
+        <search base="baseSearch">
+          <query>| search status=OPEN | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S")|eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low") | search $severitytkn$ | search $typetkn$ | search $srctkn$ | table id,Detected,policies{},source,type,status,Severity | rename id as "Incident ID" Detected as "Detection Time" policies{} as "Policies" source as "Source" type as "Type" status as "Status"</query>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <format type="color" field="type">
+          <colorPalette type="map">{"High":0xFF6566,"Medium":0xFEC946,"Low":0xB7C7DE}</colorPalette>
+        </format>
+      </table>
+    </panel>
+  </row>
+</form>
