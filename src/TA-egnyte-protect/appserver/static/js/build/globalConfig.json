@@ -1,0 +1,251 @@
+{
+    "meta": {
+        "restRoot": "TA_egnyte_protect", 
+        "displayName": "Egnyte Protect", 
+        "version": "1.0.0", 
+        "apiVersion": "3.0.0", 
+        "name": "TA-egnyte-protect"
+    }, 
+    "pages": {
+        "inputs": {
+            "title": "Inputs", 
+            "services": [
+                {
+                    "title": "egnyte", 
+                    "entity": [
+                        {
+                            "validators": [
+                                {
+                                    "type": "regex", 
+                                    "errorMsg": "Input Name must start with a letter and followed by alphabetic letters, digits or underscores.", 
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                }, 
+                                {
+                                    "maxLength": 100, 
+                                    "type": "string", 
+                                    "errorMsg": "Length of input name should be between 1 and 100", 
+                                    "minLength": 1
+                                }
+                            ], 
+                            "label": "Name", 
+                            "required": true, 
+                            "help": "Enter a unique name for the data input", 
+                            "type": "text", 
+                            "field": "name"
+                        }, 
+                        {
+                            "validators": [
+                                {
+                                    "type": "regex", 
+                                    "errorMsg": "Interval must be an integer.", 
+                                    "pattern": "^\\-[1-9]\\d*$|^\\d*$"
+                                }
+                            ], 
+                            "label": "Interval", 
+                            "required": true, 
+                            "help": "Time interval of input in seconds.", 
+                            "type": "text", 
+                            "field": "interval"
+                        }, 
+                        {
+                            "validators": [
+                                {
+                                    "maxLength": 80, 
+                                    "type": "string", 
+                                    "errorMsg": "Length of index name should be between 1 and 80.", 
+                                    "minLength": 1
+                                }
+                            ], 
+                            "label": "Index", 
+                            "required": true, 
+                            "defaultValue": "default", 
+                            "options": {
+                                "endpointUrl": "data/indexes", 
+                                "blackList": "^_.*$", 
+                                "createSearchChoice": true
+                            }, 
+                            "type": "singleSelect", 
+                            "field": "index"
+                        }, 
+                        {
+                            "label": "Endpoint", 
+                            "required": false, 
+                            "defaultValue": "US", 
+                            "help": "Select Region", 
+                            "type": "singleSelect", 
+                            "options": {
+                                "disableSearch": true, 
+                                "autoCompleteFields": [
+                                    {
+                                        "label": "US", 
+                                        "value": "US"
+                                    }, 
+                                    {
+                                        "label": "Europe", 
+                                        "value": "Europe"
+                                    }
+                                ]
+                            }, 
+                            "field": "endpoint"
+                        }, 
+                        {
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of password is 8192", 
+                                    "minLength": 0
+                                }
+                            ], 
+                            "label": "Code", 
+                            "field": "code", 
+                            "required": true, 
+                            "help": "Add code generated from redirect URL", 
+                            "type": "text", 
+                            "encrypted": true
+                        }, 
+                        {
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of password is 8192", 
+                                    "minLength": 0
+                                }
+                            ], 
+                            "label": "ClientID", 
+                            "encrypted": true, 
+                            "required": false, 
+                            "defaultValue": "pxhzq22ds3jp75bwtjq6vhme", 
+                            "help": "", 
+                            "type": "text", 
+                            "field": "clientid"
+                        }, 
+                        {
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of password is 8192", 
+                                    "minLength": 0
+                                }
+                            ], 
+                            "label": "Client Secret", 
+                            "encrypted": true, 
+                            "required": false, 
+                            "defaultValue": "Q6aKUQDpTWK6AHyEPWSVG6yYPpnpjCHbCcQpwWFvjnrmvf5f", 
+                            "help": "", 
+                            "type": "text", 
+                            "field": "client_secret"
+                        }
+                    ], 
+                    "name": "egnyte"
+                }
+            ], 
+            "table": {
+                "moreInfo": [
+                    {
+                        "label": "Name", 
+                        "field": "name"
+                    }, 
+                    {
+                        "label": "Interval", 
+                        "field": "interval"
+                    }, 
+                    {
+                        "label": "Index", 
+                        "field": "index"
+                    }, 
+                    {
+                        "label": "Status", 
+                        "field": "disabled"
+                    }, 
+                    {
+                        "label": "Endpoint", 
+                        "field": "endpoint"
+                    }, 
+                    {
+                        "label": "Code", 
+                        "field": "code"
+                    }, 
+                    {
+                        "label": "ClientID", 
+                        "field": "clientid"
+                    }, 
+                    {
+                        "label": "Client Secret", 
+                        "field": "client_secret"
+                    }
+                ], 
+                "actions": [
+                    "edit", 
+                    "enable", 
+                    "delete", 
+                    "clone"
+                ], 
+                "header": [
+                    {
+                        "label": "Name", 
+                        "field": "name"
+                    }, 
+                    {
+                        "label": "Interval", 
+                        "field": "interval"
+                    }, 
+                    {
+                        "label": "Index", 
+                        "field": "index"
+                    }, 
+                    {
+                        "label": "Status", 
+                        "field": "disabled"
+                    }
+                ]
+            }, 
+            "description": "Manage your data inputs"
+        }, 
+        "configuration": {
+            "title": "Configuration", 
+            "description": "Set up your add-on", 
+            "tabs": [
+                {
+                    "title": "Logging", 
+                    "entity": [
+                        {
+                            "defaultValue": "INFO", 
+                            "options": {
+                                "disableSearch": true, 
+                                "autoCompleteFields": [
+                                    {
+                                        "label": "DEBUG", 
+                                        "value": "DEBUG"
+                                    }, 
+                                    {
+                                        "label": "INFO", 
+                                        "value": "INFO"
+                                    }, 
+                                    {
+                                        "label": "WARNING", 
+                                        "value": "WARNING"
+                                    }, 
+                                    {
+                                        "label": "ERROR", 
+                                        "value": "ERROR"
+                                    }, 
+                                    {
+                                        "label": "CRITICAL", 
+                                        "value": "CRITICAL"
+                                    }
+                                ]
+                            }, 
+                            "type": "singleSelect", 
+                            "label": "Log level", 
+                            "field": "loglevel"
+                        }
+                    ], 
+                    "name": "logging"
+                }
+            ]
+        }
+    }
+}
