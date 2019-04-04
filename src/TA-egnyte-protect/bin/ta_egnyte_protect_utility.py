@@ -2,10 +2,10 @@ import requests
 def generate_or_refresh_token(helper=None, auth_url=None, clientid=None, client_secret=None, code=None, redirect_uri=None, refresh_token=None):
     if code:
         payload = {"client_id": clientid, "client_secret": client_secret, "grant_type": "authorization_code", 
-                  "redirect_uri": "https://egnyte.com", "code": code}
+                  "no_redirect": "true", "code": code}
     else:
         payload = {"client_id": clientid, "client_secret": client_secret, "grant_type": "refresh_token", 
-                  "redirect_uri": "https://egnyte.com/oauthredirect", 
+                  "no_redirect": "true", 
                   "refresh_token": refresh_token}
     response = requests.post(url=auth_url, data=payload,verify=True)
     return response.json()

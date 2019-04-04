@@ -36,7 +36,7 @@ def collect_events(helper, ew):
     if endpoint == "US":
         base_url = "https://usc1-stage-api.egnyteprotect.com"
     else:
-        base_url = "https://euc1-stage-api.egnyteprotect.com"
+        base_url = "https://euw1-api.egnyteprotect.com"
     client_secret = helper.get_arg('client_secret')
     stanza = stanza.values()[0]
     checkpoint = get_checkpoint(helper, stanza_name) or dict()

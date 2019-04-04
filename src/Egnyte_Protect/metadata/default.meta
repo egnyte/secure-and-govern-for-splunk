@@ -3,11 +3,4 @@
 
 []
 access = read : [ * ], write : [ admin ]
-export = system
-
-
-## Macros
-[macros/egnyte_get_index]
-access = read : [ * ], write : [ admin, power ]
-export = system
-owner = admin
+export = none

@@ -6,7 +6,7 @@
     <set token="srctkn"></set>
   </init>
   <search id="baseSearch">
-    <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,type,updated</query>
+    <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,egnyte_type,updated,severity_id</query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
   </search>
@@ -29,7 +29,7 @@
         <option name="drilldown">all</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
-          <link target="_blank">/app/Egnyte_Protect/incident_detail</link>
+          <link target="_blank">/app/Egnyte_Protect/egnyte-incident_detail?earliest=$earliest$&amp;latest=$latest$</link>
         </drilldown>
       </single>
     </panel>
@@ -37,15 +37,16 @@
       <single>
         <title>High Severity</title>
         <search base="baseSearch">
-          <query>| where severity &gt; 6 | stats dc(id) as Count</query>
+          <query>| where severity="High" | stats dc(id) as Count</query>
         </search>
         <option name="colorMode">none</option>
         <option name="drilldown">all</option>
         <option name="rangeColors">["0x53a051","0xFF6566"]</option>
         <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
         <option name="useColors">1</option>
         <drilldown>
-          <link target="_blank">/app/Egnyte_Protect/incident_detail?form.severity_tkn=%227%22%252C%228%22%252C%229%22&amp;earliest=$earliest$&amp;latest=$latest$</link>
+          <link target="_blank">/app/Egnyte_Protect/egnyte-incident_detail?form.severity_tkn=%22High%22&amp;earliest=$earliest$&amp;latest=$latest$</link>
         </drilldown>
       </single>
     </panel>
@@ -53,14 +54,15 @@
       <single>
         <title>Medium Severity</title>
         <search base="baseSearch">
-          <query>| where severity &gt; 3 AND severity &lt; 7 | stats dc(id) as Count</query>
+          <query>| where severity="Medium" AND severity_id &lt; 7 | stats dc(id) as Count</query>
         </search>
         <option name="drilldown">all</option>
         <option name="rangeColors">["0x53a051","0xFEC946"]</option>
         <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
         <option name="useColors">1</option>
         <drilldown>
-          <link target="_blank">/app/Egnyte_Protect/incident_detail?form.severity_tkn=%224%22,%225%22,%226%22&amp;earliest=$earliest$&amp;latest=$latest$</link>
+          <link target="_blank">/app/Egnyte_Protect/egnyte-incident_detail?form.severity_tkn=%22Medium%22&amp;earliest=$earliest$&amp;latest=$latest$</link>
         </drilldown>
       </single>
     </panel>
@@ -68,14 +70,15 @@
       <single>
         <title>Low Severity</title>
         <search base="baseSearch">
-          <query>| where severity &lt; 4 | stats dc(id) as Count</query>
+          <query>| where severity="Low" | stats dc(id) as Count</query>
         </search>
         <option name="drilldown">all</option>
         <option name="rangeColors">["0x53a051","0xB7C7DE"]</option>
         <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
         <option name="useColors">1</option>
         <drilldown>
-          <link target="_blank">/app/Egnyte_Protect/incident_detail?form.severity_tkn=%221%22,%222%22,%223%22&amp;earliest=$earliest$&amp;latest=$latest$</link>
+          <link target="_blank">/app/Egnyte_Protect/egnyte-incident_detail?form.severity_tkn=%22Low%22&amp;earliest=$earliest$&amp;latest=$latest$</link>
         </drilldown>
       </single>
     </panel>
@@ -85,7 +88,7 @@
       <title>Incidents Reported over Time</title>
       <chart>
         <search base="baseSearch">
-          <query>| search status=OPEN | eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low") | timechart count by Severity</query>
+          <query>| search status=OPEN | timechart count by severity</query>
         </search>
         <option name="charting.chart">area</option>
         <option name="charting.drilldown">none</option>
@@ -99,13 +102,13 @@
       <title>Open Issues By Severity</title>
       <chart>
         <search base="baseSearch">
-          <query>|search status=OPEN | eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low") | stats dc(id) as count by Severity</query>
+          <query>|search status=OPEN | stats dc(id) as count by severity</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
-          <set token="severitytkn">Severity="$click.value$"</set>
+          <set token="severitytkn">severity="$click.value$"</set>
         </drilldown>
       </chart>
     </panel>
@@ -113,13 +116,13 @@
       <title>Open Issues by Type</title>
       <chart>
         <search base="baseSearch">
-          <query>| search status=OPEN | eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low")| search $severitytkn$ | search $srctkn$ | stats dc(id) as count by type</query>
+          <query>| search status=OPEN | search $severitytkn$ | search $srctkn$ | stats dc(id) as count by egnyte_type</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
-          <set token="typetkn">type=$click.value$</set>
+          <set token="typetkn">egnyte_type=$click.value$</set>
         </drilldown>
       </chart>
     </panel>
@@ -127,7 +130,7 @@
       <title>Open Issues by Source</title>
       <chart>
         <search base="baseSearch">
-          <query>| search status=OPEN  | eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low")| search $severitytkn$ | search $typetkn$ | stats dc(id) as count by source</query>
+          <query>| search status=OPEN | search $severitytkn$ | search $typetkn$ | stats dc(id) as count by source</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>
@@ -143,7 +146,7 @@
       <title>Incidents Summary</title>
       <table>
         <search base="baseSearch">
-          <query>| search status=OPEN | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S")|eval Severity=case(severity&gt;=7, "High",severity&gt;=4 AND severity&lt;=6, "Medium",severity&lt;=3, "Low") | search $severitytkn$ | search $typetkn$ | search $srctkn$ | table id,Detected,policies{},source,type,status,Severity | rename id as "Incident ID" Detected as "Detection Time" policies{} as "Policies" source as "Source" type as "Type" status as "Status"</query>
+          <query>| search status=OPEN | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S")| search $severitytkn$ | search $typetkn$ | search $srctkn$ | table id,Detected,policies{},source,egnyte_type,status,severity | rename id as "Incident ID" Detected as "Detection Time" policies{} as "Policies" source as "Source" egnyte_type as "Type" status as "Status"</query>
         </search>
         <option name="drilldown">cell</option>
         <option name="refresh.display">progressbar</option>
