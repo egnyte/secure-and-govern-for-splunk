@@ -16,27 +16,10 @@ This repo is for integrating Egnyte Protect with Splunk. There are mainly two mo
 
 # File Structure of both the Apps
 - Egnyte App for Splunk
-   ```
-   $ tree
-.
-├── README.md
-├── default
-│   ├── app.conf 
-│   ├── data
-│   │   └── ui
-│   │       ├── nav 
-│   │       │   └── default.xml
-│   │       └── views
-│   │           ├── egnyte-incident_detail.xml
-│   │           └── egnyte-summary.xml
-│   └── macros.conf
-├── metadata
-│   └── default.meta
-└── static 
-    ├── appIcon.png
-    ├── appIconAlt.png
-    ├── appIconAlt_2x.png
-    ├── appIcon_2x.png
-    ├── appLogo.png
-    └── appLogo_2x.png
-    ``` 
+    - default : All the default configurations of the App.
+        - app.conf --> default App configuration file, for example Application version
+        - ui-nav --> App Menu Options are defined in default.xml file
+        - ui-views --> Default dashboard configurations files are located here.
+        - macro.conf --> Creating a macro in the App to allow single point of search in all the dashboard queries.
+    - metadata : this folder consists a meta file which drives the App Access rights.
+    - static : this folder consists default icons of the App.
