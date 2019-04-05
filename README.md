@@ -42,11 +42,25 @@ This repo is for integrating Egnyte Protect with Splunk. There are mainly two mo
 - Checking if the events are being indexed after configuring Add-on
     - Click on "Search" in either Egnyte App or Add-on
     - Run below query
-        ````egnyte_get_index````
+        ``` `egnyte_get_index` ```
     > The current configuration would enable Add-on Input to call for the Egnyte API endpoint hit as soon as configurations are saved. it would sometime take few minutes for user to see the events in the index.
 
 - How to check the queries which are running for each panel?
     - On each panel on the bottom right hand side there could be three small icons would be visible once scroll on that panel.
         - Magnifying Glass : It would allow you to open a search window on a seperate screen to see the search which is executing.
         - i icon: It would tell you the performance of that search query. It would depict how much time does this panel take to load against the number of records fetched.
-       
+
+# Package the App
+
+We can create the Package of the Splunk using the Splunk CLi. 
+
+- Egnyte App for Splunk
+
+    ``` $ cd /opt/splunk/bin
+        $ ./splunk package app Egnyte_Protect
+        ```
+- Egnyte Add-on for Splunk
+
+    ```$ cd /opt/splunk/bin
+        $ ./splunk package app TA-egnyte-protect
+        ```
