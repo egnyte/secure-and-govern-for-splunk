@@ -56,9 +56,13 @@ We can create the Package of the Splunk using the Splunk CLi.
 
 - Egnyte App for Splunk
 
-    ``` $ cd /opt/splunk/bin
-        $ ./splunk package app Egnyte_Protect```
+    ```
+    $ cd /opt/splunk/bin
+    $ ./splunk package app Egnyte_Protect
+    ```
 - Egnyte Add-on for Splunk
 
-    ```$ cd /opt/splunk/bin
-        $ ./splunk package app TA-egnyte-protect```
+    ```
+    $ cd /opt/splunk/bin
+    $ ./splunk package app TA-egnyte-protect
+    ```
