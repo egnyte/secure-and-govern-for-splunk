@@ -100,7 +100,7 @@
                             "label": "Code", 
                             "field": "code", 
                             "required": true, 
-                            "help": "Add code generated from redirect URL", 
+                            "help": "Generate a new code and paste here to authorize saving this form. (see link above)", 
                             "type": "text", 
                             "encrypted": true
                         }, 

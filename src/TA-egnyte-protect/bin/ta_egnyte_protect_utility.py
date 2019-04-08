@@ -8,7 +8,7 @@ def generate_or_refresh_token(helper=None, auth_url=None, clientid=None, client_
                   "no_redirect": "true", 
                   "refresh_token": refresh_token}
     response = requests.post(url=auth_url, data=payload,verify=True)
-    return response.json()
+    return response
 
 
 def collect_issues(helper, access_token, data_url):
@@ -16,4 +16,9 @@ def collect_issues(helper, access_token, data_url):
     response_data = helper.send_http_request(data_url, "GET", parameters=None, payload=None,
                                           headers=headers, cookies=None, verify=True, cert=None,
                                           timeout=None, use_proxy=False)
-    return response_data.json()
+    if response_data.status_code == 200:
+        return response_data.json()
+    if response_data.status_code == 401:
+        return response_data.status_code
+    else:
+        return response_data.json()

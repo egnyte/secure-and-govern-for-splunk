@@ -5,7 +5,6 @@
     <set token="policy_tkn"></set>
     <set token="type_tkn"></set>
     <set token="item_type_tkn"></set>
-    <set token="severity_tkn"></set>
   </init>
   <fieldset autoRun="true" submitButton="true">
     <input id="time_id" type="time">
@@ -38,17 +37,17 @@
       <choice value="&quot;High&quot;">High</choice>
       <choice value="&quot;Medium&quot;">Medium</choice>
       <choice value="&quot;Low&quot;">Low</choice>
-      <choice value="&quot;&quot;">All</choice>
+      <choice value="*">All</choice>
       <delimiter> OR </delimiter>
-      <valueSuffix>,</valueSuffix>
       <valuePrefix>severity=</valuePrefix>
+      <default>*</default>
     </input>
   </fieldset>
   <row>
     <panel>
       <table id="element1">
         <search>
-          <query>`egnyte_get_index`| eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S") | eval Updated=strftime(updated/1000,"%Y-%m-%d %H:%M:%S") | search $severity_tkn$ | search $id_tkn$ |search $policy_tkn$ |search $type_tkn$ | search $item_type_tkn$  | table id,Detected,Updated,item.displayName,item.type,policies{},severity,source,status,egnyte_type</query>
+          <query>`egnyte_get_index`  $severity_tkn$ | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S") | eval Updated=strftime(updated/1000,"%Y-%m-%d %H:%M:%S") | search $id_tkn$ |search $policy_tkn$ |search $type_tkn$ | search $item_type_tkn$  | table id,Detected,Updated,item.displayName,item.type,policies{},severity,source,status,egnyte_type</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
         </search>

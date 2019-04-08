@@ -37,15 +37,16 @@ def collect_events(helper, ew):
         base_url = "https://usc1-stage-api.egnyteprotect.com"
     else:
         base_url = "https://euw1-api.egnyteprotect.com"
+    auth_url = str(base_url) + "/oauth2/token"
     client_secret = helper.get_arg('client_secret')
     stanza = stanza.values()[0]
     checkpoint = get_checkpoint(helper, stanza_name) or dict()
     # Going to take access/refresh token if it is not available in the checkpoint
     if not checkpoint or str(checkpoint.get("code")) != str(code):
         state = get_checkpoint(helper, stanza_name) or dict()
-        auth_url = str(base_url) + "/oauth2/token"
         try:
             response = generate_or_refresh_token(helper=helper, auth_url=auth_url, clientid=clientid, client_secret=client_secret, code=code)
+            response = response.json()
             if response.get("error"):
                 helper.log_error("Error while getting access/refresh token error: {} error_description:{}".format(response.get("error", ""), response.get("error_description", "")))
                 helper.log_error("Please generate new code and update the input with new code.")
@@ -71,26 +72,26 @@ def collect_events(helper, ew):
     except Exception as e:
         raise e
     # retrying to get new access token if token is expired
-    if data.get("code", "") == 401:
+    if data == 401:
         refresh_token = checkpoint.get('refresh_token')
         try:
             response = generate_or_refresh_token(helper=helper, auth_url=auth_url, clientid=clientid, client_secret=client_secret, 
                        refresh_token=refresh_token)
-            response=response.json()
             retry = 0
-            if response.get("code", "") == 401:
+            if response.status_code == 401 or response.status_code == 400:
                 while retry < 4:
                     response = generate_or_refresh_token(helper=helper, auth_url=auth_url, clientid=clientid, client_secret=client_secret, 
                                refresh_token=refresh_token)
-                    response=response.json()
-                    if response.get("code", "") != 200:
+                    if response.status_code == 200:
+                       break
+                    else:
                        retry = retry + 1
                        helper.log_error("Retrying to get the new authorization code.")
-                    else:
-                       break
-            if response.get("code", "") == 401:
+            if response.status_code == 401 or response.status_code == 400:
                 helper.log_error("Please generate new code and update the input with new code.")
                 return 0
+            if response.status_code == 200:
+               response=response.json()
             checkpoint["access_token"] = response.get("access_token")
             checkpoint["refresh_token"] = response.get("refresh_token")
             set_checkpoint(helper, stanza_name, checkpoint)
