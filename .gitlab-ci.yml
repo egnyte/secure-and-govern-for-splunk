@@ -14,7 +14,8 @@ stages:
 
 whoami:
   stage: setup
-  image: "${CURRENT_NODE_ALPINE}"
+  image: splunk/splunk:latest
   dependencies: []
   script:
-    - whoami
+    - cd /opt
+    - ls -la
