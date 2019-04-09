@@ -47,7 +47,7 @@ This repo is for integrating Egnyte Protect with Splunk. There are mainly two mo
 - Login to splunk and install the App.
 - Go to Dashboard click on "Edit"
 - Once the changes are done click on "Save".
-- The files would get stored under ```/opt/splunk/etc/apps/local`` folder.
+- The files would get stored under ```/opt/splunk/etc/apps/local``` folder.
 - Copy the files to commit into Git.
 
 # Troubleshooting
