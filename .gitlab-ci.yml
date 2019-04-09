@@ -18,3 +18,4 @@ whoami:
   dependencies: []
   script:
     - ls -la
+    - pwd
