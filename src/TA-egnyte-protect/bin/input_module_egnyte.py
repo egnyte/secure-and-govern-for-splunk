@@ -77,16 +77,6 @@ def collect_events(helper, ew):
         try:
             response = generate_or_refresh_token(helper=helper, auth_url=auth_url, clientid=clientid, client_secret=client_secret, 
                        refresh_token=refresh_token)
-            retry = 0
-            if response.status_code == 401 or response.status_code == 400:
-                while retry < 4:
-                    response = generate_or_refresh_token(helper=helper, auth_url=auth_url, clientid=clientid, client_secret=client_secret, 
-                               refresh_token=refresh_token)
-                    if response.status_code == 200:
-                       break
-                    else:
-                       retry = retry + 1
-                       helper.log_error("Retrying to get the new authorization code.")
             if response.status_code == 401 or response.status_code == 400:
                 helper.log_error("Please generate new code and update the input with new code.")
                 return 0
