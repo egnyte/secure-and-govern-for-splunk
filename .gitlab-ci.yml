@@ -17,5 +17,4 @@ whoami:
   image: splunk/splunk:latest
   dependencies: []
   script:
-    - cd /opt
     - ls -la
