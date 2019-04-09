@@ -1,0 +1,20 @@
+variables:
+  DOCKER_HOST: "tcp://localhost:2375"
+  DOCKER_DRIVER: overlay2
+  CXXFLAGS: "-Wno-error"
+  CFLAGS: "-Wno-error"
+  CURRENT_NODE_ALPINE: "alpine:3.7"
+  DOCKER_WRITER_GCR_JSON_BASE64: "${DOCKER_WRITER_PINT_PROTECT_GCR_JSON_BASE64}"
+  GCR_CONTAINER_REGISTRY_NAME: "egnyteprotect-automation"
+  SSH_PRIVATE_KEY_BASE64: ${SSH_PINT_CI_PRIVATE_KEY_BASE64}
+  SSH_CONFIG: "Host *\n\tStrictHostKeyChecking no\n\n"
+
+stages:
+  - setup
+
+whoami:
+  stage: setup
+  image: "${CURRENT_NODE_ALPINE}"
+  dependencies: []
+  script:
+    - whoami
