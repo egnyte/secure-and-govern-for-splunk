@@ -19,10 +19,10 @@ build-spl-files:
   script:
     - cd src
     - ls -la /opt/splunk/etc
-    - mkdir /opt/splunk/etc/apps
-    - cp -R . /opt/splunk/etc/apps
-    - chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
-    - chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
+    - sudo mkdir /opt/splunk/etc/apps
+    - sudo cp -R . /opt/splunk/etc/apps
+    - sudo chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
+    - sudo chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
     - cd /opt/splunk/bin
     - ./splunk package app Egnyte_Protect
     - ./splunk package app TA-egnyte-protect
