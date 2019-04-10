@@ -23,7 +23,8 @@ build-spl-files:
     - sudo cp -R . /opt/splunk/etc/apps
     - sudo chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
     - sudo chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
-    - sudo cd /opt/splunk/bin
+    - cd /
+    - tree
     - ./splunk package app Egnyte_Protect
     - ./splunk package app TA-egnyte-protect
   artifacts:
