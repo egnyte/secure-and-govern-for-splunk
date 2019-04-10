@@ -17,5 +17,13 @@ whoami:
   image: splunk/splunk:latest
   dependencies: []
   script:
-    - ls -la
-    - pwd
+    - cd src
+    - cp -R . /opt/splunk/etc/apps
+    - chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
+    - chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
+    - cd /opt/splunk/bin
+    - ./splunk package app Egnyte_Protect
+    - ./splunk package app TA-egnyte-protect
+  artifacts:
+    paths:
+      - /opt/splunk/etc/system/static/app-packages/
