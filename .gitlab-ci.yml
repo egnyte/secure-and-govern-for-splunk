@@ -15,11 +15,9 @@ stages:
 build-spl-files:
   stage: build
   image:
-    name: splunk/splunk:latest
-    entrypoint: ["/bin/bash", "/sbin/entrypoint.sh"]
+    name: splunk/universalforwarder:latest
   dependencies: []
   script:
-    - /bin/bash /sbin/entrypoint.sh
     - cd src
     - ls -la /opt/splunk/etc
     - sudo mkdir /opt/splunk/etc/apps
