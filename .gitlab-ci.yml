@@ -16,7 +16,7 @@ build-spl-files:
   stage: build
   image:
     name: splunk/splunk:latest
-    entrypoint: ["/sbin/entrypoint.sh"]
+    entrypoint: ["/bin/bash", "/sbin/entrypoint.sh"]
   dependencies: []
   script:
     - cd src
