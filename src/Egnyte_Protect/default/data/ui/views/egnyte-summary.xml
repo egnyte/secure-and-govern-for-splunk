@@ -6,7 +6,7 @@
     <set token="srctkn"></set>
   </init>
   <search id="baseSearch">
-    <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,egnyte_type,updated,severity_id</query>
+    <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,egnyte_type,updated,severity_id,item.displayName</query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
   </search>
@@ -146,7 +146,7 @@
       <title>Incidents Summary</title>
       <table>
         <search base="baseSearch">
-          <query>| search status=OPEN | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S")| search $severitytkn$ | search $typetkn$ | search $srctkn$ | table id,Detected,policies{},source,egnyte_type,status,severity | rename id as "Incident ID" Detected as "Detection Time" policies{} as "Policies" source as "Source" egnyte_type as "Type" status as "Status"</query>
+          <query>| search status=OPEN | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S")| search $severitytkn$ | search $typetkn$ | search $srctkn$ | table id,Detected,policies{},source,egnyte_type,status,severity,item.displayName | rename id as "Incident ID" Detected as "Detection Time" policies{} as "Policies" source as "Content Source" egnyte_type as "Type" status as "Status" severity as "Severity" item.displayName as "Item"</query>
         </search>
         <option name="drilldown">cell</option>
         <option name="refresh.display">progressbar</option>
