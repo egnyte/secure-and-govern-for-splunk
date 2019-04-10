@@ -10,15 +10,15 @@ variables:
   SSH_CONFIG: "Host *\n\tStrictHostKeyChecking no\n\n"
 
 stages:
-  - setup
+  - build
 
-whoami:
-  stage: setup
+build-spl-files:
+  stage: build
   image: splunk/splunk:latest
   dependencies: []
   script:
     - cd src
-    - cp -R . /opt/splunk/etc/apps
+    - sudo cp -R . /opt/splunk/etc/apps
     - chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
     - chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
     - cd /opt/splunk/bin
