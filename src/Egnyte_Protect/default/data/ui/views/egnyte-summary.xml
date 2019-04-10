@@ -107,6 +107,8 @@
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>
         <option name="refresh.display">progressbar</option>
+        <option name="charting.legend.labels">[High,Medium,Low]</option>
+        <option name="charting.seriesColors">[0xFF6566,0xFEC946,0xB7C7DE]</option>
         <drilldown>
           <set token="severitytkn">severity="$click.value$"</set>
         </drilldown>
