@@ -14,7 +14,9 @@ stages:
 
 build-spl-files:
   stage: build
-  image: splunk/splunk:latest
+  image:
+    name: splunk/splunk:latest
+    entrypoint: ["/bin/bash"]
   dependencies: []
   script:
     - cd src
@@ -23,7 +25,7 @@ build-spl-files:
     - sudo cp -R . /opt/splunk/etc/apps
     - sudo chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
     - sudo chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
-    - cd /opt/splunk
+    - cd /opt/splunk/bin
     - ls -la
     - ./splunk package app Egnyte_Protect
     - ./splunk package app TA-egnyte-protect
