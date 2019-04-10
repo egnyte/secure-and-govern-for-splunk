@@ -18,7 +18,8 @@ build-spl-files:
   dependencies: []
   script:
     - cd src
-    - sudo cp -R . /opt/splunk/etc/apps
+    - sudo su
+    - cp -R . /opt/splunk/etc/apps
     - chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
     - chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
     - cd /opt/splunk/bin
