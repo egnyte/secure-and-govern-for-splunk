@@ -19,6 +19,7 @@ build-spl-files:
     entrypoint: ["/bin/bash", "/sbin/entrypoint.sh"]
   dependencies: []
   script:
+    - /sbin/entrypoint.sh
     - cd src
     - ls -la /opt/splunk/etc
     - sudo mkdir /opt/splunk/etc/apps
