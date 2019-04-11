@@ -28,5 +28,8 @@ build-spl-files:
     - docker exec -u root $CONTAINER_ID ls -la /opt/splunk/etc/apps
     - docker exec -u root $CONTAINER_ID chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
     - docker exec -u root $CONTAINER_ID chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
-    - docker exec -u root $CONTAINER_ID /opt/splunk/bin/splunk package app Egnyte_Protect
-    - docker exec -u root $CONTAINER_ID /opt/splunk/bin/splunk package app TA-egnyte-protect
+    - docker exec -u 0 $CONTAINER_ID /opt/splunk/bin/splunk package app Egnyte_Protect
+    - docker exec -u 0 $CONTAINER_ID /opt/splunk/bin/splunk package app TA-egnyte-protect
+    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/Egnyte_Protect.spl /integrations
+    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/TA-egnyte-protect.spl /integrations
+    - ls -la /integrations
