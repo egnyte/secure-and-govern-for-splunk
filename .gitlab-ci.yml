@@ -15,7 +15,7 @@ stages:
 build-spl-files:
   stage: build
   image:
-    name: alpine:3.7
+    name: eu.gcr.io/coral-muse-571/alpine_ci_k8s:latest
   services:
     - docker:dind
   dependencies: []
