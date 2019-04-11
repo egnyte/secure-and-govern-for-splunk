@@ -15,12 +15,9 @@ stages:
 build-spl-files:
   stage: build
   image:
-    name: splunk/splunk:latest
+    name: gcr.io/cis-us/splunk:v4
   dependencies: []
   script:
-    - export SPLUNK_START_ARGS=--accept-license
-    - export SPLUNK_PASSWORD=admin123
-    - /sbin/entrypoint.sh start-service
     - cd src
     - ls -la /opt/splunk/etc
     - sudo mkdir /opt/splunk/etc/apps
