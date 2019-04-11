@@ -15,19 +15,11 @@ stages:
 build-spl-files:
   stage: build
   image:
-    name: gcr.io/cis-us/splunk:v4
+    name: alpine:3.7
+  services:
+    - docker:dind
   dependencies: []
   script:
-    - cd src
-    - ls -la /opt/splunk/etc
-    - sudo mkdir /opt/splunk/etc/apps
-    - sudo cp -R . /opt/splunk/etc/apps
-    - sudo chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
-    - sudo chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
-    - cd /opt/splunk/bin
+    - CONTAINER_ID=$(docker run -d -p 8000:8000 -e 'SPLUNK_START_ARGS=--accept-license' -e 'SPLUNK_PASSWORD=admin123' splunk/splunk:latest start)
+    - docker exec -it CONTAINER_ID /bin/bash
     - ls -la
-    - ./splunk package app Egnyte_Protect
-    - ./splunk package app TA-egnyte-protect
-  artifacts:
-    paths:
-      - /opt/splunk/etc/system/static/app-packages/
