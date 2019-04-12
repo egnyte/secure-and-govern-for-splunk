@@ -116,7 +116,7 @@
       <title>Open Issues by Type</title>
       <chart>
         <search base="baseSearch">
-          <query>| search status=OPEN | search $severitytkn$ | search $srctkn$ | stats dc(id) as count by egnyte_type</query>
+          <query>| search status=OPEN | search $severitytkn$ | search $srctkn$ | eval egnyte_type = replace(egnyte_type,"_"," ") | stats dc(id) as count by egnyte_type</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>

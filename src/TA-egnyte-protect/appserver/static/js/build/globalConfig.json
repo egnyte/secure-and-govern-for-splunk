@@ -68,7 +68,7 @@
                             "field": "index"
                         }, 
                         {
-                            "label": "Endpoint", 
+                            "label": "Region", 
                             "required": false, 
                             "defaultValue": "US", 
                             "help": "Select Region", 
@@ -97,7 +97,7 @@
                                     "minLength": 0
                                 }
                             ], 
-                            "label": "Code", 
+                            "label": "Authorization Code", 
                             "field": "code", 
                             "required": true, 
                             "help": "Generate a new code and paste here to authorize saving this form. (see link above)", 
@@ -161,11 +161,11 @@
                         "field": "disabled"
                     }, 
                     {
-                        "label": "Endpoint", 
+                        "label": "Region", 
                         "field": "endpoint"
                     }, 
                     {
-                        "label": "Code", 
+                        "label": "Authorization Code", 
                         "field": "code"
                     }, 
                     {
