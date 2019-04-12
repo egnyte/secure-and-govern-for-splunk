@@ -6,7 +6,7 @@
     <set token="srctkn"></set>
   </init>
   <search id="baseSearch">
-    <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,egnyte_type,updated,severity_id</query>
+    <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,egnyte_type,updated,severity_id | eval egnyte_type = replace(egnyte_type,"_"," ") </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
   </search>
@@ -116,13 +116,13 @@
       <title>Open Issues by Type</title>
       <chart>
         <search base="baseSearch">
-          <query>| search status=OPEN | search $severitytkn$ | search $srctkn$ | eval egnyte_type = replace(egnyte_type,"_"," ") | stats dc(id) as count by egnyte_type</query>
+          <query>| search status=OPEN | search $severitytkn$ | search $srctkn$ | stats dc(id) as count by egnyte_type</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
-          <set token="typetkn">egnyte_type=$click.value$</set>
+          <set token="typetkn">egnyte_type="$click.value$"</set>
         </drilldown>
       </chart>
     </panel>
