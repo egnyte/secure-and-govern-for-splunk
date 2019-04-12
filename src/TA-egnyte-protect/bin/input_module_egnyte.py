@@ -10,6 +10,7 @@ from solnlib.credentials import (CredentialManager, CredentialNotExistException)
 from urlparse import urlparse
 import requests
 from ta_egnyte_protect_utility import *
+import ta_egnyte_constants as tec
 
 def validate_input(helper, definition):
     code = definition.parameters.get('code', None)
@@ -34,9 +35,9 @@ def collect_events(helper, ew):
     endpoint = helper.get_arg('endpoint')
     code = helper.get_arg('code')
     if endpoint == "US":
-        base_url = "https://usc1-stage-api.egnyteprotect.com"
+        base_url = tec.us_url
     else:
-        base_url = "https://euw1-api.egnyteprotect.com"
+        base_url =tec.europe_url
     auth_url = str(base_url) + "/oauth2/token"
     client_secret = helper.get_arg('client_secret')
     stanza = stanza.values()[0]
