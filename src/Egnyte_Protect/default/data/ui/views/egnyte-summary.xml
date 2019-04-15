@@ -107,6 +107,7 @@
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>
         <option name="refresh.display">progressbar</option>
+        <option name="charting.fieldColors">{"High":0xFF6566,"Medium":0xFEC946,"Low":0xB7C7DE}</option>
         <drilldown>
           <set token="severitytkn">severity="$click.value$"</set>
         </drilldown>
@@ -146,7 +147,7 @@
       <title>Incidents Summary</title>
       <table>
         <search base="baseSearch">
-          <query>| search status=OPEN | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S")| search $severitytkn$ | search $typetkn$ | search $srctkn$ | table id,policies{},source,egnyte_type,status,severity,Detected | rename id as "Incident ID" policies{} as "Policies" source as "Source" egnyte_type as "Type" status as "Status" Detected as "Detection Time"</query>
+          <query>| search status=OPEN | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S")| search $severitytkn$ | search $typetkn$ | search $srctkn$ | table id,policies{},source,egnyte_type,severity,Detected | rename id as "Incident ID" policies{} as "Policies" source as "Content Source" severity as "Severity" egnyte_type as "Type" Detected as "Detection Time"</query>
         </search>
         <option name="drilldown">cell</option>
         <option name="refresh.display">progressbar</option>
