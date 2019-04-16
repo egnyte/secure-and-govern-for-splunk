@@ -6,7 +6,7 @@
     <set token="srctkn"></set>
   </init>
   <search id="baseSearch">
-    <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,egnyte_type,updated,severity_id | eval egnyte_type = replace(egnyte_type,"_"," ") </query>
+    <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,egnyte_type,updated,severity_id | eval egnyte_type = replace(egnyte_type,"_"," ") | eval egnyte_type = upper(substr(egnyte_type,1,1)).lower(substr(egnyte_type,2)) </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
   </search>

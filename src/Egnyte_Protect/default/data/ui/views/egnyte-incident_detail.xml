@@ -47,7 +47,7 @@
     <panel>
       <table id="element1">
         <search>
-          <query>`egnyte_get_index`  $severity_tkn$ | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S") | eval Updated=strftime(updated/1000,"%Y-%m-%d %H:%M:%S") | search $id_tkn$ |search $policy_tkn$ |search $type_tkn$ | search $item_type_tkn$  | table id,Detected,Updated,item.displayName,item.type,policies{},severity,source,status,egnyte_type | rename id as "Incident ID" Detected as "Detection Time" Updated as "Last Updated" item.displayName as "Item" item.type as "Item Type" policies{} as "Policies" source as "Content Source" egnyte_type as "Type" status as "Status" severity as "Severity"</query>
+          <query>`egnyte_get_index`  $severity_tkn$ | eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S") | eval Updated=strftime(updated/1000,"%Y-%m-%d %H:%M:%S") | search $id_tkn$ |search $policy_tkn$ |search $type_tkn$ | search $item_type_tkn$  | table id,Detected,Updated,item.displayName,item.type,policies{},severity,source,status,egnyte_type  | eval egnyte_type = replace(egnyte_type,"_"," ") | eval egnyte_type = upper(substr(egnyte_type,1,1)).lower(substr(egnyte_type,2)) | rename id as "Incident ID" Detected as "Detection Time" Updated as "Last Updated" item.displayName as "Item" item.type as "Item Type" policies{} as "Policies" source as "Content Source" egnyte_type as "Type" status as "Status" severity as "Severity"</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
         </search>
