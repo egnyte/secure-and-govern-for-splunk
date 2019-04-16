@@ -24,8 +24,10 @@ build-spl-files:
     - docker exec -u 0 $CONTAINER_ID /opt/splunk/bin/splunk package app Egnyte_Protect -auth admin:admin123
     - docker exec -u 0 $CONTAINER_ID /opt/splunk/bin/splunk package app TA-egnyte-protect -auth admin:admin123
     - mkdir /integrations/splunk-protect/builds
-    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/Egnyte_Protect.spl /integrations/splunk-protect/builds
-    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/TA-egnyte-protect.spl /integrations/splunk-protect/builds
+    - APP_VERSION=$(docker exec -u 0 $CONTAINER_ID cat /opt/splunk/etc/apps/Egnyte_Protect/default/app.conf | grep version | sed 's/version[[:blank:]]*=[[:blank:]]*//')
+    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/Egnyte_Protect.spl /integrations/splunk-protect/builds/Egnyte_Protect-$APP_VERSION.spl
+    - ADDON_VERSION=$(docker exec -u 0 $CONTAINER_ID cat /opt/splunk/etc/apps/TA-egnyte-protect/default/app.conf | grep version | sed 's/version[[:blank:]]*=[[:blank:]]*//')
+    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/TA-egnyte-protect.spl /integrations/splunk-protect/builds/TA-egnyte-protect-$ADDON_VERSION.spl
   artifacts:
     paths:
       - /integrations/splunk-protect/builds
