@@ -127,3 +127,7 @@ We can create the Package of the Splunk using the Splunk CLi.
     $ ./splunk package app TA-egnyte-protect
     ```
 - Copy the location given by the previous command output and commit to ```build``` directory on GitLab.
+
+## Packaging on CI
+A part of CI process is generating .spl package files from the current app version. After successful build they are stored as artifacts. For creating build files we need splunk binary which is available from inside running splunk container. Initailly splunk binary doesn't exist inside container. It is produced as a result of ansible script which is fired on the container start through configured entrypoint. Because of that we weren't able to use splunk/splunk:latest image as a base image for build process because of lack of splunk binary inside. Creating custom image from running container with binary being already inside also failed.
+Solution is running splunk container inside build container. Script needs to wait for splunk initialization. After that apps code is copied to container and splunk binary is used to generate package. Then .spl files are fetched from container and marked as artifacts.
