@@ -16,7 +16,7 @@ build-spl-files:
   dependencies: []
   script:
     - CONTAINER_ID=$(docker run -d -p 8000:8000 -e 'SPLUNK_START_ARGS=--accept-license' -e 'SPLUNK_PASSWORD=admin123' splunk/splunk:latest start)
-    - sleep 60
+    - sleep 10
     - docker cp /integrations/splunk-protect/src/Egnyte_Protect $CONTAINER_ID:/opt/splunk/etc/apps
     - docker cp /integrations/splunk-protect/src/TA-egnyte-protect $CONTAINER_ID:/opt/splunk/etc/apps
     - docker exec -u 0 $CONTAINER_ID chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
