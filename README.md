@@ -130,4 +130,16 @@ We can create the Package of the Splunk using the Splunk CLi.
 
 ## Packaging on CI
 A part of CI process is generating .spl package files from the current app version. After successful build they are stored as artifacts. For creating build files we need splunk binary which is available from inside running splunk container. Initailly splunk binary doesn't exist inside container. It is produced as a result of ansible script which is fired on the container start through configured entrypoint. Because of that we weren't able to use splunk/splunk:latest image as a base image for build process because of lack of splunk binary inside. Creating custom image from running container with binary being already inside also failed.
+
 Solution is running splunk container inside build container. Script needs to wait for splunk initialization. After that apps code is copied to container and splunk binary is used to generate package. Then .spl files are fetched from container and marked as artifacts.
+
+In case when ```sleep 60``` stops being enough ```/opt/splunk/etc/apps``` or ```/opt/splunk/bin/splunk``` might not exist. One of below errors may appear:
+```
+ls: cannot access '/opt/splunk/etc/apps': No such file or directory
+```
+```
+OCI runtime exec failed: exec failed: container_linux.go:344: starting container process caused "exec: \"/opt/splunk/bin/splunk\": stat /opt/splunk/bin/splunk: no such file or directory": unknown
+```
+```
+ERROR: Couldn't read "/opt/splunk/etc/splunk-launch.conf" -- maybe $SPLUNK_HOME or $SPLUNK_ETC is set wrong?
+```
