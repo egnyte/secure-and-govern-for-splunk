@@ -14,12 +14,15 @@ import ta_egnyte_constants as tec
 
 def validate_input(helper, definition):
     code = definition.parameters.get('code', None)
+    interval = float(definition.parameters.get('interval', None))
+    if interval < 3600:
+        helper.log_error("Interval must be greater than 3600 seconds.")
+        raise Exception('Interval must be greater than 3600 seconds')
     try:
         if not code:
            raise
     except Exception as e:
         raise Exception("Please enter code in setup page, %s" %str(e))
-    pass
 
 def get_checkpoint(helper, stanza_name):
     return helper.get_check_point(stanza_name)
@@ -61,57 +64,65 @@ def collect_events(helper, ew):
             raise e
     checkpoint = get_checkpoint(helper, stanza_name) or dict()
     data_url = ""
-    
+    final_cursor = ""
     if checkpoint.get("cursor"):
         data_url = str(base_url) + "/api/v1/issues?cursor=" + str(checkpoint.get("cursor"))
     else:  
         data_url = str(base_url) + "/api/v1/issues"
     data = {}
-    try:
-        # collecting issues from the Egnyte server
-        data = collect_issues(helper, checkpoint.get('access_token'), data_url)
-    except Exception as e:
-        raise e
-    # retrying to get new access token if token is expired
-    if data == 401:
-        refresh_token = checkpoint.get('refresh_token')
+    cursor_done = True
+    while cursor_done:
         try:
-            response = generate_or_refresh_token(helper=helper, auth_url=auth_url, clientid=clientid, client_secret=client_secret, 
-                       refresh_token=refresh_token)
-            if response.status_code == 401 or response.status_code == 400:
-                helper.log_error("Please generate new code and update the input with new code.")
-                return 0
-            if response.status_code == 200:
-               response=response.json()
-            checkpoint["access_token"] = response.get("access_token")
-            checkpoint["refresh_token"] = response.get("refresh_token")
-            set_checkpoint(helper, stanza_name, checkpoint)
-        
-        except Exception as e:
-            raise e
-        
-        checkpoint = get_checkpoint(helper, stanza_name)
-        if checkpoint.get("cursor"):
-            data_url = str(base_url) + "/api/v1/issues?cursor=" + str(checkpoint.get("cursor"))
-        else:  
-            data_url = str(base_url) + "/api/v1/issues"
-        try:
+            # collecting issues from the Egnyte server
             data = collect_issues(helper, checkpoint.get('access_token'), data_url)
-            if data.get("error",""):
-               helper.log_error("Error while collecting data error: {} error_description:{}".format(response.get("error", ""), response.get("error_description", "")))
-               return
         except Exception as e:
             raise e
-    # indexing issues into Splunk
-    if data.get("issues", ""):
-        issues = data.get("issues")
-        event_time = time.time()
-        index = stanza.get("index", "main")
-        source = "egnyte"
-        sourcetype = "egnyte:protect:incidents"
-        for i in issues:
-            event = helper.new_event(data=json.dumps(i), time=event_time, host=None, index=index,source=source, sourcetype=sourcetype, done=True,unbroken=True)
-            ew.write_event(event)
-        if data.get("cursor"):
-            checkpoint["cursor"] = data.get("cursor")
-            set_checkpoint(helper, stanza_name, checkpoint)
+        # retrying to get new access token if token is expired
+        if data == 401:
+            refresh_token = checkpoint.get('refresh_token')
+            try:
+                response = generate_or_refresh_token(helper=helper, auth_url=auth_url, clientid=clientid, client_secret=client_secret, 
+                           refresh_token=refresh_token)
+                if response.status_code == 401 or response.status_code == 400:
+                    helper.log_error("Please generate new code and update the input with new code.")
+                    return 0
+                if response.status_code == 200:
+                   response=response.json()
+                checkpoint["access_token"] = response.get("access_token")
+                checkpoint["refresh_token"] = response.get("refresh_token")
+                set_checkpoint(helper, stanza_name, checkpoint)
+            
+            except Exception as e:
+                raise e
+            
+            checkpoint = get_checkpoint(helper, stanza_name)
+            final_cursor = final_cursor or checkpoint.get("cursor")
+            if final_cursor:
+                data_url = str(base_url) + "/api/v1/issues?cursor=" + str(final_cursor)
+            else:  
+                data_url = str(base_url) + "/api/v1/issues"
+            try:
+                data = collect_issues(helper, checkpoint.get('access_token'), data_url)
+                if data.get("error",""):
+                   helper.log_error("Error while collecting data error: {} error_description:{}".format(response.get("error", ""), response.get("error_description", "")))
+                   return
+            except Exception as e:
+                raise e
+        # indexing issues into Splunk
+        if data.get("issues", ""):
+            issues = data.get("issues")
+            event_time = time.time()
+            index = stanza.get("index", "main")
+            source = "egnyte"
+            sourcetype = "egnyte:protect:incidents"
+            for i in issues:
+                event = helper.new_event(data=json.dumps(i), time=event_time, host=None, index=index,source=source, sourcetype=sourcetype, done=True,unbroken=True)
+                ew.write_event(event)
+            if data.get("cursor"):
+                final_cursor = data.get("cursor")
+                data_url = str(base_url) + "/api/v1/issues?cursor=" + str(final_cursor)
+        else:
+            cursor_done = False
+    if final_cursor:
+        checkpoint["cursor"] = long(final_cursor)
+        set_checkpoint(helper, stanza_name, checkpoint)
