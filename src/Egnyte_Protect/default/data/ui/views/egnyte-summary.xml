@@ -148,7 +148,7 @@
       <title>Open Issues by Type</title>
       <chart>
         <search base="baseSearch">
-          <query>| eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S")| search $severitytkn$ | search $typetkn$ | search $srctkn$ | table id,policies{},source,egnyte_type,severity,Detected | rename id as "Incident ID" policies{} as "Policies" source as "Content Source" severity as "Severity" egnyte_type as "Type" Detected as "Detection Time"</query>
+          <query>| search status=OPEN | search $severitytkn$ | search $srctkn$ | stats dc(id) as count by egnyte_type</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>
