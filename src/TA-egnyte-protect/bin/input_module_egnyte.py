@@ -37,6 +37,7 @@ def collect_events(helper, ew):
     clientid = helper.get_arg('clientid')
     endpoint = helper.get_arg('endpoint')
     code = helper.get_arg('code')
+    number_of_events = 0
     if endpoint == "US":
         base_url = tec.us_url
     else:
@@ -64,14 +65,14 @@ def collect_events(helper, ew):
             raise e
     checkpoint = get_checkpoint(helper, stanza_name) or dict()
     data_url = ""
-    final_cursor = ""
-    if checkpoint.get("cursor"):
-        data_url = str(base_url) + "/api/v1/issues?cursor=" + str(checkpoint.get("cursor"))
+    final_modifiedAfter = ""
+    if checkpoint.get("modifiedAfter"):
+        data_url = str(base_url) + "/api/v1/issueupdates?modifiedAfter=" + str(checkpoint.get("modifiedAfter"))
     else:  
-        data_url = str(base_url) + "/api/v1/issues"
+        data_url = str(base_url) + "/api/v1/issueupdates"
     data = {}
-    cursor_done = True
-    while cursor_done:
+    modifiedAfter_done = True
+    while modifiedAfter_done:
         try:
             # collecting issues from the Egnyte server
             data = collect_issues(helper, checkpoint.get('access_token'), data_url)
@@ -96,11 +97,11 @@ def collect_events(helper, ew):
                 raise e
             
             checkpoint = get_checkpoint(helper, stanza_name)
-            final_cursor = final_cursor or checkpoint.get("cursor")
-            if final_cursor:
-                data_url = str(base_url) + "/api/v1/issues?cursor=" + str(final_cursor)
+            final_modifiedAfter = final_modifiedAfter or checkpoint.get("modifiedAfter")
+            if final_modifiedAfter:
+                data_url = str(base_url) + "/api/v1/issueupdates?modifiedAfter=" + str(final_modifiedAfter)
             else:  
-                data_url = str(base_url) + "/api/v1/issues"
+                data_url = str(base_url) + "/api/v1/issueupdates"
             try:
                 data = collect_issues(helper, checkpoint.get('access_token'), data_url)
                 if data.get("error",""):
@@ -111,6 +112,7 @@ def collect_events(helper, ew):
         # indexing issues into Splunk
         if data.get("issues", ""):
             issues = data.get("issues")
+            event_count = len(issues)
             event_time = time.time()
             index = stanza.get("index", "main")
             source = "egnyte"
@@ -118,11 +120,15 @@ def collect_events(helper, ew):
             for i in issues:
                 event = helper.new_event(data=json.dumps(i), time=event_time, host=None, index=index,source=source, sourcetype=sourcetype, done=True,unbroken=True)
                 ew.write_event(event)
-            if data.get("cursor"):
-                final_cursor = data.get("cursor")
-                data_url = str(base_url) + "/api/v1/issues?cursor=" + str(final_cursor)
+            number_of_events = number_of_events + event_count
+            if data.get("modifiedAfter"):
+                final_modifiedAfter = data.get("modifiedAfter")
+                helper.log_debug("Collected events till: {}".format(final_modifiedAfter))
+                data_url = str(base_url) + "/api/v1/issueupdates?modifiedAfter=" + str(final_modifiedAfter)
         else:
-            cursor_done = False
-    if final_cursor:
-        checkpoint["cursor"] = long(final_cursor)
+            modifiedAfter_done = False
+            helper.log_info("Total indexed events into Splunk: {}".format(number_of_events))
+
+    if final_modifiedAfter:
+        checkpoint["modifiedAfter"] = long(final_modifiedAfter)
         set_checkpoint(helper, stanza_name, checkpoint)
