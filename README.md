@@ -13,7 +13,7 @@ This repo is for integrating Egnyte Protect with Splunk. There are mainly two mo
 
 ### Local/dev installation
 
-- run `docker-compose up` to start splunk in docker
+- run `./start.sh` to start splunk in docker
 - open localhost:8000
 - load app files from build 
 ![sideloading apps](./sideloading.png)
