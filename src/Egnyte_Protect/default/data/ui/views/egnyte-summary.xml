@@ -116,7 +116,7 @@
   </row>
   <row>
     <panel>
-      <title>Incidents Reported over Time</title>
+      <title>New Incidents Reported over Time</title>
       <chart>
         <search base="baseSearch">
           <query>| search status=OPEN | timechart count by severity</query>
