@@ -11,6 +11,13 @@ This repo is for integrating Egnyte Protect with Splunk. There are mainly two mo
 - [OS specific Installation Process](https://docs.splunk.com/Documentation/Splunk/7.2.5/SearchTutorial/InstallSplunk)
 - [Setting up Splunk in Docker](https://docs.splunk.com/Documentation/Splunk/7.2.4/Installation/DeployandrunSplunkEnterpriseinsideDockercontainers)
 
+### Local/dev installation
+
+- run `docker-compose up` to start splunk in docker
+- open localhost:8000
+- load app files from build 
+![sideloading apps](./sideloading.png)
+
 # App Specification Document (For Installing & Setting up Apps in Splunk)
 - [Document](https://docs.google.com/document/d/1QqOPITxa1-U_XQG4UD9-kreOaSKjpKZckm-Azh6xTvY/edit?usp=sharing)
 
