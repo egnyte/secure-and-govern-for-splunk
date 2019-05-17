@@ -18,18 +18,18 @@ build-spl-files:
     - CONTAINER_ID=$(docker run -d -p 8000:8000 -e 'SPLUNK_START_ARGS=--accept-license' -e 'SPLUNK_PASSWORD=admin123' splunk/splunk:latest start)
     - sleep 60
     - docker exec -u 0 $CONTAINER_ID ls /opt/splunk/etc/apps
-    - docker cp /integrations/splunk-protect/src/Egnyte_Protect $CONTAINER_ID:/opt/splunk/etc/apps
-    - docker cp /integrations/splunk-protect/src/TA-egnyte-protect $CONTAINER_ID:/opt/splunk/etc/apps
+    - docker cp src/Egnyte_Protect $CONTAINER_ID:/opt/splunk/etc/apps
+    - docker cp src/TA-egnyte-protect $CONTAINER_ID:/opt/splunk/etc/apps
     - docker exec -u 0 $CONTAINER_ID chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
     - docker exec -u 0 $CONTAINER_ID chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
     - docker exec -u 0 $CONTAINER_ID /opt/splunk/bin/splunk package app Egnyte_Protect -auth admin:admin123
     - docker exec -u 0 $CONTAINER_ID /opt/splunk/bin/splunk package app TA-egnyte-protect -auth admin:admin123
-    - mkdir /integrations/splunk-protect/builds
+    - mkdir builds
     - APP_VERSION=$(docker exec -u 0 $CONTAINER_ID cat /opt/splunk/etc/apps/Egnyte_Protect/default/app.conf | grep version | sed 's/^version[[:blank:]]*=[[:blank:]]*\([0-9]*\.[0-9]*\.[0-9]*\).*$/\1/')
-    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/Egnyte_Protect.spl /integrations/splunk-protect/builds/Egnyte_Protect-$APP_VERSION.spl
+    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/Egnyte_Protect.spl builds/Egnyte_Protect-$APP_VERSION.spl
     - ADDON_VERSION=$(docker exec -u 0 $CONTAINER_ID cat /opt/splunk/etc/apps/TA-egnyte-protect/default/app.conf | grep version | sed 's/^version[[:blank:]]*=[[:blank:]]*\([0-9]*\.[0-9]*\.[0-9]*\).*$/\1/')
-    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/TA-egnyte-protect.spl /integrations/splunk-protect/builds/TA-egnyte-protect-$ADDON_VERSION.spl
+    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/TA-egnyte-protect.spl builds/TA-egnyte-protect-$ADDON_VERSION.spl
   artifacts:
     paths:
-      - /integrations/splunk-protect/builds
+      - builds
     expire_in: 1 week
