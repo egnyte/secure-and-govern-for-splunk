@@ -62,6 +62,22 @@
         </drilldown>
       </single>
     </panel>
+    <panel>
+      <single>
+        <title>Total Ignored Issues</title>
+        <search base="baseSearch">
+          <query>| where status="IGNORED" | stats dc(id) as Count</query>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xFF0000"]</option>
+        <option name="rangeValues">[0,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <link target="_blank">/app/Egnyte_Protect/egnyte-incident_detail?earliest=$earliest$&amp;latest=$latest$&amp;form.status_tkn=%22IGNORED%22</link>
+        </drilldown>
+      </single>
+    </panel>
   </row>
   <row>
     <panel>
@@ -116,7 +132,7 @@
   </row>
   <row>
     <panel>
-      <title>New Incidents Reported over Time</title>
+      <title>Incidents Reported over Time</title>
       <chart>
         <search base="baseSearch">
           <query>| search status=OPEN | timechart count by severity</query>

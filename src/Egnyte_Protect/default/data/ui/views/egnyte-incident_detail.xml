@@ -42,10 +42,11 @@
       <valuePrefix>severity=</valuePrefix>
       <default>*</default>
     </input>
-     <input type="multiselect" token="status_tkn">
+    <input type="multiselect" token="status_tkn">
       <label>Status</label>
       <choice value="&quot;OPEN&quot;">Open</choice>
       <choice value="&quot;RESOLVED&quot;">Resolved</choice>
+      <choice value="&quot;IGNORED&quot;">Ignored</choice>
       <choice value="*">All</choice>
       <delimiter> OR </delimiter>
       <valuePrefix>status=</valuePrefix>
