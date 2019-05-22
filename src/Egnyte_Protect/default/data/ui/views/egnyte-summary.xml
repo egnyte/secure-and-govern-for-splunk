@@ -37,7 +37,7 @@
       <single>
         <title>Total Resolved Issues</title>
         <search base="baseSearch">
-          <query>| where status="RESOLVED" | stats dc(id) as Count</query>
+          <query>| stats latest(status) as status_final by id | where status_final="RESOLVED" | stats dc(id) as Count</query>
         </search>
         <option name="drilldown">all</option>
         <option name="refresh.display">progressbar</option>
@@ -50,7 +50,7 @@
       <single>
         <title>Total Open Issues</title>
         <search base="baseSearch">
-          <query>| where status="OPEN" | stats dc(id) as Count</query>
+          <query>| stats latest(status) as status_final by id | where status_final="OPEN" | stats dc(id) as Count</query>
         </search>
         <option name="drilldown">all</option>
         <option name="rangeColors">["0x53a051","0xf1813f","0xFF0000"]</option>
@@ -66,7 +66,7 @@
       <single>
         <title>Total Ignored Issues</title>
         <search base="baseSearch">
-          <query>| where status="IGNORED" | stats dc(id) as Count</query>
+          <query>| stats latest(status) as status_final by id | where status_final="IGNORED" | stats dc(id) as Count</query>
         </search>
         <option name="drilldown">all</option>
         <option name="rangeColors">["0x53a051","0xf1813f","0xFF0000"]</option>
@@ -84,7 +84,7 @@
       <single>
         <title>Open Issues - High Severity</title>
         <search base="baseSearch">
-          <query>| where severity="High" AND status="OPEN" | stats dc(id) as Count</query>
+          <query>| stats latest(status) as status_final,latest(severity) as severity_final by id  |  where severity_final="High" AND status_final="OPEN" | stats dc(id) as Count</query>
         </search>
         <option name="colorMode">none</option>
         <option name="drilldown">all</option>
@@ -101,7 +101,7 @@
       <single>
         <title>Open Issues - Medium Severity</title>
         <search base="baseSearch">
-          <query>| where status="OPEN" AND severity="Medium" | stats dc(id) as Count</query>
+          <query>| stats latest(status) as status_final,latest(severity) as severity_final by id  |  where severity_final="Medium" AND status_final="OPEN" | stats dc(id) as Count</query>
         </search>
         <option name="drilldown">all</option>
         <option name="rangeColors">["0x53a051","0xFEC946"]</option>
@@ -117,7 +117,7 @@
       <single>
         <title>Open Issues - Low Severity</title>
         <search base="baseSearch">
-          <query>| where status="OPEN" AND severity="Low" | stats dc(id) as Count</query>
+          <query>| stats latest(status) as status_final,latest(severity) as severity_final by id  |  where severity_final="Low" AND status_final="OPEN" | stats dc(id) as Count</query>
         </search>
         <option name="drilldown">all</option>
         <option name="rangeColors">["0x53a051","0xB7C7DE"]</option>
