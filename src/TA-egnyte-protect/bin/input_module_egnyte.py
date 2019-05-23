@@ -15,9 +15,9 @@ import ta_egnyte_constants as tec
 def validate_input(helper, definition):
     code = definition.parameters.get('code', None)
     interval = float(definition.parameters.get('interval', None))
-    if interval < 3600:
-        helper.log_error("Interval must be greater than 3600 seconds.")
-        raise Exception('Interval must be greater than 3600 seconds')
+    if interval < 600:
+        helper.log_error("Interval must be greater than 600 seconds.")
+        raise Exception('Interval must be greater than 600 seconds')
     try:
         if not code:
            raise

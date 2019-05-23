@@ -41,9 +41,9 @@
                                     "pattern": "^\\-[1-9]\\d*$|^\\d*$"
                                 },
                                 {
-                                    "range": [3600,86400000],
+                                    "range": [600,86400000],
                                     "type": "number",
-                                    "errorMsg": "Interval must be greater than 3600 seconds."
+                                    "errorMsg": "Interval must be greater than 600 seconds."
                                 }
                             ], 
                             "label": "Interval", 
