@@ -135,7 +135,7 @@
       <title>Incidents Reported over Time</title>
       <chart>
         <search base="baseSearch">
-          <query>| search status=OPEN | timechart count by severity</query>
+          <query>| timechart dc(id) as count by severity</query>
         </search>
         <option name="charting.chart">area</option>
         <option name="charting.drilldown">none</option>
