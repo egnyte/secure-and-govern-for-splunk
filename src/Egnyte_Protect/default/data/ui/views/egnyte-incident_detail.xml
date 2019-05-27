@@ -6,7 +6,18 @@
     <set token="type_tkn"></set>
     <set token="item_type_tkn"></set>
   </init>
+  <search>
+    <query>
+      | rest /services/data/inputs/egnyte | table endpoint | eval endpoint=if(endpoint="US","usc","euw1") 
+    </query>
+    <done>
+      <set token="endpoint">$result.endpoint$</set>
+    </done>
+  </search>
   <fieldset autoRun="true" submitButton="true">
+    <html>
+      <a href= "https://$endpoint$1-stage.egnyteprotect.com" target="_blank">Link to visit Egnyte Protect</a>
+    </html>
     <input id="time_id" type="time">
       <label>Time</label>
       <default>Last 24 hours</default>
