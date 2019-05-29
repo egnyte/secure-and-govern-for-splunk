@@ -1,8 +1,3 @@
 mount_optSplunkEtcApps
-<<<<<<< HEAD
 src/TA-egnyte-protect/bin/*.pyc
 
-=======
-*.pyc
-*.pyo
->>>>>>> 83da6fcaef82bb38da43e77103773e4deddafa0e
