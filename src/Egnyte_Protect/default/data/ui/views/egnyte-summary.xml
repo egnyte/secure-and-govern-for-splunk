@@ -5,6 +5,14 @@
     <set token="typetkn"></set>
     <set token="srctkn"></set>
   </init>
+  <search>
+    <query>
+      | rest /services/data/inputs/egnyte | table endpoint | eval endpoint=if(endpoint="US","usc1.egnyteprotect.com","euw1.egnyteprotect.com") | table endpoint | appendcols [| stats count | eval endpoint="login.egnyteprotect.com"] | table endpoint
+    </query>
+    <done>
+      <set token="endpoint">$result.endpoint$</set>
+    </done>
+  </search>
   <search id="baseSearch">
     <query>`egnyte_get_index` | fields detected,id,polcies,severity,source,status,egnyte_type,updated,severity_id | eval egnyte_type = replace(egnyte_type,"_"," ") | eval egnyte_type = upper(substr(egnyte_type,1,1)).lower(substr(egnyte_type,2)) </query>
     <earliest>$field1.earliest$</earliest>
@@ -12,7 +20,7 @@
   </search>
   <fieldset submitButton="false">
     <html>
-      <a href= "https://login.egnyteprotect.com" target="_blank">Go to Egnyte Protect</a>
+      <a href="https://$endpoint$" target="_blank">Go to Egnyte Protect</a>
     </html>
     <input type="time" token="field1">
       <label></label>

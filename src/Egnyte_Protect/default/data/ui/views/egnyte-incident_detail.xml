@@ -6,9 +6,17 @@
     <set token="type_tkn"></set>
     <set token="item_type_tkn"></set>
   </init>
+  <search>
+    <query>
+      | rest /services/data/inputs/egnyte | table endpoint | eval endpoint=if(endpoint="US","usc1.egnyteprotect.com","euw1.egnyteprotect.com") | table endpoint | appendcols [| stats count | eval endpoint="login.egnyteprotect.com"] | table endpoint
+    </query>
+    <done>
+      <set token="endpoint">$result.endpoint$</set>
+    </done>
+  </search>
   <fieldset autoRun="true" submitButton="true">
     <html>
-      <a href= "https://login.egnyteprotect.com" target="_blank">Go to Egnyte Protect</a>
+      <a href= "https://$endpoint$" target="_blank">Go to Egnyte Protect</a>
     </html>
     <input id="time_id" type="time">
       <label>Time</label>
