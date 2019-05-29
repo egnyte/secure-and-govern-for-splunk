@@ -38,5 +38,5 @@ Macro configuration.
 
 
 # Support
-Customers can file issues by sending emails to : splunk.support@egnyte.com
+Customers can file issues by sending emails to : splunk@egnyte.com
 
