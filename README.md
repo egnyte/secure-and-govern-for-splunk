@@ -71,8 +71,8 @@ This repo is for integrating Egnyte Protect with Splunk. There are mainly two mo
         - i icon: It would tell you the performance of that search query. It would depict how much time does this panel take to load against the number of records fetched.
 
 - How to update API endpoints for Production or further versions of the App?
-    - input_module_egnyte.py (TA-egnyte-protect/bin)
-        Need to change line No. 37 and line No.39
+    - ta_egnyte_contants.py (TA-egnyte-protect/bin)
+        Need to change the API endpoints which are defined in this.
     - common.js (TA-egnyte-protect/appserver/static/js/build)
         Use find and replace command to replace the URL
         Replace ```https://usc1-stage-api.egnyteprotect.com/oauth2/code?client_id=pxhzq22ds3jp75bwtjq6vhme&no_redirect=true&response_type=code``` with the new one
