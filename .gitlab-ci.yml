@@ -27,6 +27,7 @@ build-spl-files:
     - gzip Egnyte_Protect.tar
 
     - cd TA-egnyte-protect
+    - chown -R root:root *
     - chmod -R 644 *
     - chmod -R 755 bin
     - chmod 700 default
@@ -36,11 +37,13 @@ build-spl-files:
     - chmod 700 default/data/ui/views
     - chmod 700 metadata
     - chmod 700 static
+    - chmod 700 README
     - chmod 700 appserver
     - chmod 700 appserver/static
     - chmod 700 appserver/static/css
     - chmod 700 appserver/static/img
     - chmod 700 appserver/static/js
+    - chmod 700 appserver/static/js/build
     - chmod 700 appserver/templates
     - cd ..
     - tar cvf TA-egnyte-protect.tar TA-egnyte-protect
