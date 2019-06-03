@@ -28,7 +28,7 @@ build-spl-files:
     - docker exec -u 0 $CONTAINER_ID chmod 700 /opt/splunk/etc/apps/Egnyte_Protect/default/data/ui
     - docker exec -u 0 $CONTAINER_ID chmod 700 /opt/splunk/etc/apps/Egnyte_Protect/default/data/ui/views
     - docker exec -u 0 $CONTAINER_ID chmod 700 /opt/splunk/etc/apps/Egnyte_Protect/default/data/ui/nav
-    - docker exec -u 0 $CONTAINER_ID tar cv /opt/splunk/etc/apps/Egnyte_Protect/ > /opt/splunk/etc/apps/Egnyte_Protect.tar
+    - docker exec -u 0 $CONTAINER_ID tar cvf /opt/splunk/etc/apps/Egnyte_Protect.tar /opt/splunk/etc/apps/Egnyte_Protect
     - docker exec -u 0 $CONTAINER_ID gzip /opt/splunk/etc/apps/Egnyte_Protect.tar
 
     - docker cp src/TA-egnyte-protect $CONTAINER_ID:/opt/splunk/etc/apps
@@ -48,7 +48,7 @@ build-spl-files:
     - docker exec -u 0 $CONTAINER_ID chmod 700 /opt/splunk/etc/apps/TA-egnyte-protect/appserver/static/img
     - docker exec -u 0 $CONTAINER_ID chmod 700 /opt/splunk/etc/apps/TA-egnyte-protect/appserver/static/js
     - docker exec -u 0 $CONTAINER_ID chmod 700 /opt/splunk/etc/apps/TA-egnyte-protect/appserver/templates
-    - docker exec -u 0 $CONTAINER_ID tar cv /opt/splunk/etc/apps/TA-egnyte-protect/ > /opt/splunk/etc/apps/TA-egnyte-protect.tar
+    - docker exec -u 0 $CONTAINER_ID tar cvf /opt/splunk/etc/apps/TA-egnyte-protect.tar /opt/splunk/etc/apps/TA-egnyte-protect
     - docker exec -u 0 $CONTAINER_ID gzip /opt/splunk/etc/apps/TA-egnyte-protect.tar
 
     - mkdir builds
