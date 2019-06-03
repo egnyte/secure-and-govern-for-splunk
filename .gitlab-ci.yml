@@ -19,20 +19,41 @@ build-spl-files:
     - sleep 60
     - docker exec -u 0 $CONTAINER_ID ls /opt/splunk/etc/apps
     - docker cp src/Egnyte_Protect $CONTAINER_ID:/opt/splunk/etc/apps
-    - docker cp src/TA-egnyte-protect $CONTAINER_ID:/opt/splunk/etc/apps
     - docker exec -u 0 $CONTAINER_ID chown -R splunk:splunk /opt/splunk/etc/apps/Egnyte_Protect
-    - docker exec -u 0 $CONTAINER_ID chmod -R 755 /opt/splunk/etc/apps/Egnyte_Protect/default
-    - docker exec -u 0 $CONTAINER_ID chmod -R 755 /opt/splunk/etc/apps/Egnyte_Protect/metadata
-    - docker exec -u 0 $CONTAINER_ID chmod -R 755 /opt/splunk/etc/apps/Egnyte_Protect/static
-    - docker exec -u 0 $CONTAINER_ID chmod -R 644 /opt/splunk/etc/apps/Egnyte_Protect/README.md
+    - docker exec -u 0 $CONTAINER_ID chmod -R 644 /opt/splunk/etc/apps/Egnyte_Protect/*
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/Egnyte_Protect/default
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/Egnyte_Protect/metadata
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/Egnyte_Protect/static
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/Egnyte_Protect/default/data
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/Egnyte_Protect/default/data/ui
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/Egnyte_Protect/default/data/ui/views
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/Egnyte_Protect/default/data/ui/nav
+    - docker exec -u 0 $CONTAINER_ID tar cv /opt/splunk/etc/apps/Egnyte_Protect/ > /opt/splunk/etc/apps/Egnyte_Protect.tar
+    - docker exec -u 0 $CONTAINER_ID gzip /opt/splunk/etc/apps/Egnyte_Protect.tar
+
+    - docker cp src/TA-egnyte-protect $CONTAINER_ID:/opt/splunk/etc/apps
     - docker exec -u 0 $CONTAINER_ID chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
-    - docker exec -u 0 $CONTAINER_ID /opt/splunk/bin/splunk package app Egnyte_Protect -auth admin:admin123
-    - docker exec -u 0 $CONTAINER_ID /opt/splunk/bin/splunk package app TA-egnyte-protect -auth admin:admin123
+    - docker exec -u 0 $CONTAINER_ID chmod -R 644 /opt/splunk/etc/apps/TA-egnyte-protect/*
+    - docker exec -u 0 $CONTAINER_ID chmod -R 755 /opt/splunk/etc/apps/TA-egnyte-protect/bin
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/default
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/default/data
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/default/data/ui
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/default/data/ui/nav
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/default/data/ui/views
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/metadata
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/static
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/appserver
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/appserver/static
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/appserver/static/css
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/appserver/static/img
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/appserver/static/js
+    - docker exec -u 0 $CONTAINER_ID chmod -R 700 /opt/splunk/etc/apps/TA-egnyte-protect/appserver/templates
+    - docker exec -u 0 $CONTAINER_ID tar cv /opt/splunk/etc/apps/TA-egnyte-protect/ > /opt/splunk/etc/apps/TA-egnyte-protect.tar
+    - docker exec -u 0 $CONTAINER_ID gzip /opt/splunk/etc/apps/TA-egnyte-protect.tar
+
     - mkdir builds
-    - APP_VERSION=$(docker exec -u 0 $CONTAINER_ID cat /opt/splunk/etc/apps/Egnyte_Protect/default/app.conf | grep version | sed 's/^version[[:blank:]]*=[[:blank:]]*\([0-9]*\.[0-9]*\.[0-9]*\).*$/\1/')
-    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/Egnyte_Protect.spl builds/Egnyte_Protect-$APP_VERSION.spl
-    - ADDON_VERSION=$(docker exec -u 0 $CONTAINER_ID cat /opt/splunk/etc/apps/TA-egnyte-protect/default/app.conf | grep version | sed 's/^version[[:blank:]]*=[[:blank:]]*\([0-9]*\.[0-9]*\.[0-9]*\).*$/\1/')
-    - docker cp $CONTAINER_ID:/opt/splunk/etc/system/static/app-packages/TA-egnyte-protect.spl builds/TA-egnyte-protect-$ADDON_VERSION.spl
+    - docker cp $CONTAINER_ID:/opt/splunk/etc/apps/Egnyte_Protect.tar.gz builds/Egnyte_Protect.spl
+    - docker cp $CONTAINER_ID:/opt/splunk/etc/apps/TA-egnyte-protect.tar.gz builds/TA-egnyte-protect.spl
   artifacts:
     paths:
       - builds
