@@ -79,7 +79,7 @@ This repo is for integrating Egnyte Protect with Splunk. There are mainly two mo
 
 # Versioning of the App
 
-App versioning in the Splunk App is controlled by a single file ```default/app.conf``` in both the modules.
+App versioning in the Splunk App is controlled by a file ```default/app.conf``` in both the modules. Additionally for addon we need to update also verion in ```app.manifest``` under ```info.id.version``` property.
 
 You can change ```version``` field in this file to update the version of the Splunk App.
 
