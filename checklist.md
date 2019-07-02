@@ -1,6 +1,6 @@
 In addon:
 - configure new input for US/EU zone (only one input at a time should be configured)
-- check Interval field (value should be greater or equal 3600)
+- check Interval field (value should be greater or equal 600)
 - after configuration new events should be visible on Search tab
 - we can remove input previously configured
 
