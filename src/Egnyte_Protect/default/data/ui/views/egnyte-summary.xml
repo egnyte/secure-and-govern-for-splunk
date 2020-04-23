@@ -215,9 +215,6 @@
         <format type="color" field="type">
           <colorPalette type="map">{"High":0xFF6566,"Medium":0xFEC946,"Low":0xB7C7DE}</colorPalette>
         </format>
-        <drilldown>
-          <link target="_blank">search?q=%60egnyte_get_index%60%20%7C%20fields%20detected,id,policies%7B%7D,severity,source,status,egnyte_type,updated,severity_id%20%7C%20eval%20egnyte_type%20=%20replace(egnyte_type,%22_%22,%22%20%22)%20%7C%20eval%20egnyte_type%20=%20upper(substr(egnyte_type,1,1)).lower(substr(egnyte_type,2))%20%7C%20%20eval%20Detected=strftime(detected/1000,%22%25Y-%25m-%25d%20%25H:%25M:%25S%22)%20%7C%20search%20$severitytkn$%20%7C%20search%20$typetkn$%20%7C%20search%20$srctkn$%20%7C%20search%20$status_tkn$%20%7C%20table%20id,policies%7B%7D,source,egnyte_type,status,severity,Detected%20%7C%20rename%20id%20as%20%22Incident%20ID%22%20policies%7B%7D%20as%20%22Policies%22%20source%20as%20%22Source%22%20egnyte_type%20as%20%22Type%22%20status%20as%20%22Status%22%20Detected%20as%20%22Detection%20Time%22&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
-        </drilldown>
       </table>
     </panel>
   </row>
