@@ -35,40 +35,17 @@ fields = [
     ), 
     field.RestField(
         'endpoint',
-        required=False,
+        required=True,
         encrypted=False,
         default='US',
         validator=None
     ), 
     field.RestField(
-        'code',
+        'global_account',
         required=True,
-        encrypted=True,
+        encrypted=False,
         default=None,
-        validator=validator.String(
-            min_len=0, 
-            max_len=8192, 
-        )
-    ), 
-    field.RestField(
-        'clientid',
-        required=False,
-        encrypted=True,
-        default='pxhzq22ds3jp75bwtjq6vhme',
-        validator=validator.String(
-            min_len=0, 
-            max_len=8192, 
-        )
-    ), 
-    field.RestField(
-        'client_secret',
-        required=False,
-        encrypted=True,
-        default='Q6aKUQDpTWK6AHyEPWSVG6yYPpnpjCHbCcQpwWFvjnrmvf5f',
-        validator=validator.String(
-            min_len=0, 
-            max_len=8192, 
-        )
+        validator=None
     ), 
 
     field.RestField(

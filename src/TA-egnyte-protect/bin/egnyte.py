@@ -46,21 +46,13 @@ class ModInputegnyte(modinput_wrapper.base_modinput.BaseModInput):
         For customized inputs, hard code the arguments here to hide argument detail from users.
         For other input types, arguments should be get from input_module. Defining new input types could be easier.
         """
-        scheme.add_argument(smi.Argument("endpoint", title="Endpoint",
+        scheme.add_argument(smi.Argument("endpoint", title="Region",
                                          description="Select Region",
-                                         required_on_create=False,
-                                         required_on_edit=False))
-        scheme.add_argument(smi.Argument("code", title="Code",
-                                         description="Add code generated from redirect URL",
                                          required_on_create=True,
                                          required_on_edit=False))
-        scheme.add_argument(smi.Argument("clientid", title="ClientID",
+        scheme.add_argument(smi.Argument("global_account", title="Global Account",
                                          description="",
-                                         required_on_create=False,
-                                         required_on_edit=False))
-        scheme.add_argument(smi.Argument("client_secret", title="Client Secret",
-                                         description="",
-                                         required_on_create=False,
+                                         required_on_create=True,
                                          required_on_edit=False))
         return scheme
 
@@ -77,6 +69,7 @@ class ModInputegnyte(modinput_wrapper.base_modinput.BaseModInput):
 
     def get_account_fields(self):
         account_fields = []
+        account_fields.append("global_account")
         return account_fields
 
     def get_checkbox_fields(self):

@@ -5,12 +5,14 @@ Egnyte Protect Add-on For Splunk integrates with Egnyte Protect platform and ing
 
 # REQUIREMENTS
 
-* Splunk version 6.6.x, 7.x.x 
+* Splunk version 7.x.x, 8.0.x
 * This application should be installed on Forwarder in case of cluster.
 
 # Release Notes
 
-* Version: 1.0.0
+* Version: 1.0.4
+- Added support of Splunk v8
+- Fixed Appcert issue and moved Authorization Code and ClientID to Configuration page
 
 # RECOMMENDED SYSTEM CONFIGURATION
 

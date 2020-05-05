@@ -7,22 +7,15 @@ import json
 from requests.exceptions import HTTPError
 from solnlib.splunkenv import get_splunkd_uri
 from solnlib.credentials import (CredentialManager, CredentialNotExistException)
-from urlparse import urlparse
 import requests
 from ta_egnyte_protect_utility import *
 import ta_egnyte_constants as tec
 
 def validate_input(helper, definition):
-    code = definition.parameters.get('code', None)
     interval = float(definition.parameters.get('interval', None))
     if interval < 600:
         helper.log_error("Interval must be greater than 600 seconds.")
         raise Exception('Interval must be greater than 600 seconds')
-    try:
-        if not code:
-           raise
-    except Exception as e:
-        raise Exception("Please enter code in setup page, %s" %str(e))
 
 def get_checkpoint(helper, stanza_name):
     return helper.get_check_point(stanza_name)
@@ -32,19 +25,23 @@ def set_checkpoint(helper, stanza_name, state):
 
 def collect_events(helper, ew):
     # getting setup parameters
-    stanza = helper.get_input_stanza()
-    stanza_name = stanza.keys()[0]
-    clientid = helper.get_arg('clientid')
+    input_name = helper.get_input_stanza_names()
+    input_stanza = helper.get_input_stanza()
+    global_account = helper.get_arg('global_account')
+    clientid = input_stanza[input_name]['global_account']['client_id']
+    client_secret = input_stanza[input_name]['global_account']['client_secret']
+    code = input_stanza[input_name]['global_account']['password']
+    stanza_name = list(input_stanza.keys())[0]
+    stanza = list(input_stanza.values())[0]
+
     endpoint = helper.get_arg('endpoint')
-    code = helper.get_arg('code')
     number_of_events = 0
     if endpoint == "US":
         base_url = tec.us_url
     else:
         base_url =tec.europe_url
     auth_url = str(base_url) + "/oauth2/token"
-    client_secret = helper.get_arg('client_secret')
-    stanza = stanza.values()[0]
+    
     checkpoint = get_checkpoint(helper, stanza_name) or dict()
     # Going to take access/refresh token if it is not available in the checkpoint
     if not checkpoint or str(checkpoint.get("code")) != str(code):
@@ -130,5 +127,5 @@ def collect_events(helper, ew):
             helper.log_info("Total indexed events into Splunk: {}".format(number_of_events))
 
     if final_modifiedAfter:
-        checkpoint["modifiedAfter"] = long(final_modifiedAfter)
+        checkpoint["modifiedAfter"] = int(final_modifiedAfter)
         set_checkpoint(helper, stanza_name, checkpoint)
