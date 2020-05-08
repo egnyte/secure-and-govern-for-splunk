@@ -56,7 +56,6 @@
                             "field": "client_id",
                             "label": "Client ID",
                             "type": "text",
-                            "defaultValue": "pxhzq22ds3jp75bwtjq6vhme",
                             "required": true,
                             "help": "Enter the ClientID for this account.",
                             "validators": [
@@ -199,7 +198,7 @@
             "services": [
                 {
                     "name": "egnyte",
-                    "title": "egnyte",
+                    "title": "Egnyte Protect",
                     "entity": [
                         {
                             "field": "name",

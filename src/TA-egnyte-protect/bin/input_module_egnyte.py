@@ -14,8 +14,8 @@ import ta_egnyte_constants as tec
 def validate_input(helper, definition):
     interval = float(definition.parameters.get('interval', None))
     if interval < 600:
-        helper.log_error("Interval must be greater than 600 seconds.")
-        raise Exception('Interval must be greater than 600 seconds')
+        helper.log_error("Interval must be at least 600 seconds.")
+        raise Exception('Interval must be at least 600 seconds')
 
 def get_checkpoint(helper, stanza_name):
     return helper.get_check_point(stanza_name)
