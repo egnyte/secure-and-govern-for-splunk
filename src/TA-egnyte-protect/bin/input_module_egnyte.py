@@ -45,9 +45,11 @@ def collect_events(helper, ew):
     checkpoint = get_checkpoint(helper, stanza_name) or dict()
     # Going to take access/refresh token if it is not available in the checkpoint
     if not checkpoint or str(checkpoint.get("code")) != str(code):
+        helper.log_error("Checkpoint is not available or code changed from setup page. Hence requesting new access token.")
         state = get_checkpoint(helper, stanza_name) or dict()
         try:
             response = generate_or_refresh_token(helper=helper, auth_url=auth_url, clientid=clientid, client_secret=client_secret, code=code)
+            helper.log_error("Checkpoint is not available or code changed from setup page. Hence requested new access token.Details: {}".format(response))
             response = response.json()
             if response.get("error"):
                 helper.log_error("Error while getting access/refresh token error: {} error_description:{}".format(response.get("error", ""), response.get("error_description", "")))
@@ -86,9 +88,9 @@ def collect_events(helper, ew):
                     return 0
                 if response.status_code == 200:
                    response=response.json()
-                checkpoint["access_token"] = response.get("access_token")
-                checkpoint["refresh_token"] = response.get("refresh_token")
-                set_checkpoint(helper, stanza_name, checkpoint)
+                    checkpoint["access_token"] = response.get("access_token")
+                    checkpoint["refresh_token"] = response.get("refresh_token")
+                    set_checkpoint(helper, stanza_name, checkpoint)
             
             except Exception as e:
                 raise e
