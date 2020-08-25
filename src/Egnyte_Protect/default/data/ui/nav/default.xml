@@ -1,6 +1,6 @@
 <nav search_view="search" color="#5a6464">
 	<view name="egnyte-summary" default="true" />
-	<view name="egnyte-incident_detail" />
-		
+	<view name="egnyte-incident_detail" />	
+	<view name="log_monitoring" />
 	<view name="search" />	
 </nav>
