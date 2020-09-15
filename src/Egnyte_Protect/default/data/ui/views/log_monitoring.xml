@@ -23,7 +23,7 @@
       <title>Total Success</title>
       <single>
         <search>
-          <query>`egnyte_get_logs_index` status_code=200 | stats count</query>
+          <query>`egnyte_get_logs_index` | rex field=_raw "Status\sCode:\s*(?&lt;status_code&gt;\d+)" | search status_code=200 | stats count</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -35,7 +35,7 @@
       <title>Total Token Expired</title>
       <single>
         <search>
-          <query>`egnyte_get_logs_index` status_code=401 | stats count</query>
+          <query>`egnyte_get_logs_index` | rex field=_raw "Status\sCode:\s*(?&lt;status_code&gt;\d+)" | search status_code=401 | stats count</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -49,7 +49,7 @@
       <title>Transactions by API Response Code</title>
       <chart>
         <search>
-          <query>`egnyte_get_logs_index` status_code!=NULL | timechart count by status_code</query>
+          <query>`egnyte_get_logs_index` | rex field=_raw "Status\sCode:\s*(?&lt;status_code&gt;\d+)" | search status_code!=NULL | timechart count by status_code</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
@@ -94,7 +94,7 @@
       <title>Success Calls</title>
       <chart>
         <search>
-          <query>`egnyte_get_logs_index` status_code=200 | timechart count by status_code</query>
+          <query>`egnyte_get_logs_index` | rex field=_raw "Status\sCode:\s*(?&lt;status_code&gt;\d+)" | search status_code=200 | timechart count by status_code</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>

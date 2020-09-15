@@ -10,6 +10,8 @@ from solnlib.credentials import (CredentialManager, CredentialNotExistException)
 import requests
 from ta_egnyte_protect_utility import *
 import ta_egnyte_constants as tec
+import splunk.rest as rest
+APP_NAME = os.path.abspath(__file__).split(os.sep)[-3]
 
 def validate_input(helper, definition):
     interval = float(definition.parameters.get('interval', None))
@@ -33,7 +35,7 @@ def collect_events(helper, ew):
     code = input_stanza[input_name]['global_account']['password']
     stanza_name = list(input_stanza.keys())[0]
     stanza = list(input_stanza.values())[0]
-
+    session_key = helper.context_meta['session_key']
     endpoint = helper.get_arg('endpoint')
     number_of_events = 0
     if endpoint == "US":
@@ -54,6 +56,13 @@ def collect_events(helper, ew):
             if response.get("error"):
                 helper.log_error("Error while getting access/refresh token error: {} error_description:{}".format(response.get("error", ""), response.get("error_description", "")))
                 helper.log_error("Please generate new code and update the input with new code.")
+                postargs = {
+                        'severity': "error",
+                        'name': APP_NAME,
+                        'value': "Egnyte Add-on: Please generate new code and update the input with new code."
+                }
+                rest.simpleRequest('/services/messages',
+                                session_key, postargs=postargs)
                 return
             else:
                 state["access_token"] = response.get("access_token")
@@ -85,6 +94,14 @@ def collect_events(helper, ew):
                            refresh_token=refresh_token)
                 if response.status_code == 401 or response.status_code == 400:
                     helper.log_error("Please generate new code and update the input with new code.")
+                    postargs = {
+                        'severity': "error",
+                        'name': APP_NAME,
+                        'value': "Egnyte Add-on: Please generate new code and update the input with new code."
+                    }
+
+                    rest.simpleRequest('/services/messages',
+                                    session_key, postargs=postargs)
                     return 0
                 if response.status_code == 200:
                     response=response.json()
