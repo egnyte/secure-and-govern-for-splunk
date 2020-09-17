@@ -10,9 +10,10 @@ class AccountModel(SingleModel):
 
     def validate(self, name, data, existing=None):
         """To get stanza name for future use as it can only be retrive from here."""
-        global ACCOUNT_STANZA_NAME, INDEX_NAME
+        global ACCOUNT_STANZA_NAME, INDEX_NAME, ENDPOINT
         ACCOUNT_STANZA_NAME = name
         INDEX_NAME = data.get("index", "main")
+        ENDPOINT = data.get("endpoint", "US")
         super(AccountModel, self).validate(name, data, existing)
 
 class AccountHandler(ConfigMigrationHandler):
@@ -33,6 +34,7 @@ class AccountHandler(ConfigMigrationHandler):
                 "name": "{}://{}_{}".format(modular_input_name, ACCOUNT_STANZA_NAME, input_type),
                 "global_account": ACCOUNT_STANZA_NAME,
                 "disabled": "true",
+                "endpoint": ENDPOINT,
                 "index": INDEX_NAME
             }
 

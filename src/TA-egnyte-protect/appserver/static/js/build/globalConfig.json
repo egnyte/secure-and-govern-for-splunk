@@ -100,6 +100,27 @@
                             ]
                         },
                         {
+                            "field": "endpoint",
+                            "label": "Region",
+                            "help": "Select Region",
+                            "required": true,
+                            "type": "singleSelect",
+                            "defaultValue": "US",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "US",
+                                        "label": "US"
+                                    },
+                                    {
+                                        "value": "Europe",
+                                        "label": "Europe"
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "field": "index",
                             "label": "Index",
                             "type": "singleSelect",

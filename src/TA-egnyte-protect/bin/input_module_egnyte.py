@@ -51,7 +51,7 @@ def collect_events(helper, ew):
         state = get_checkpoint(helper, stanza_name) or dict()
         try:
             response = generate_or_refresh_token(helper=helper, auth_url=auth_url, clientid=clientid, client_secret=client_secret, code=code)
-            helper.log_info("Checkpoint is not available or code changed from setup page. Hence requested new access token.Details: {}".format(response))
+            helper.log_info("Checkpoint is not available or code changed from setup page. Hence requested new access token.")
             response = response.json()
             if response.get("error"):
                 helper.log_error("Error while getting access/refresh token error: {} error_description:{}".format(response.get("error", ""), response.get("error_description", "")))

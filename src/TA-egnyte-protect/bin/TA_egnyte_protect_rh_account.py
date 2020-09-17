@@ -42,6 +42,13 @@ fields = [
             min_len=1, 
             max_len=8192, 
         )
+    ), 
+    field.RestField(
+        'endpoint',
+        required=True,
+        encrypted=False,
+        default='US',
+        validator=None
     ),
     field.RestField(
         'index',
