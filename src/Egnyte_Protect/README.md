@@ -1,22 +1,26 @@
 # OVERVIEW
 
-Egnyte Protect App For Splunk provides insights to the enterprises for the overall incidents which are identified and raised by Egnyte Protect. It would enable Splunk administrators to track the enterprise-wide incidents identified by Egnyte Protect directly through the Splunk App.
+Egnyte Secure & Govern App For Splunk provides insights to the enterprises for the overall incidents which are identified and raised by Egnyte Secure & Govern. It would enable Splunk administrators to track the enterprise-wide incidents identified by Egnyte Secure & Govern directly through the Splunk App.
 
-Egnyte Protect is a SaaS content governance solution that is simple to set up and use. It works across multiple repository types, such as Egnyte Connect, OneDrive for Business and Windows File Servers. It shows you where your sensitive information resides and highlights potential exposures of information.
+Egnyte Secure & Govern is a SaaS content governance solution that is simple to set up and use. It works across multiple repository types, such as Egnyte Connect, OneDrive for Business and Windows File Servers. It shows you where your sensitive information resides and highlights potential exposures of information.
 
-Egnyte Protect delivers content classification, identifies issues, sends realtime alerts, enables remediation.
+Egnyte Secure & Govern delivers content classification, identifies issues, sends realtime alerts, enables remediation.
 
 
 
 # REQUIREMENTS
 
-* Egnyte Protect Add-on For Splunk
-* Splunk version 6.6.x, 7.x.x 
+* Egnyte Secure & Govern Add-on For Splunk
+* Splunk version 7.2.x, 7.3.x , 8.x.x 
 * This application should be installed on Search Head.
 
 # Release Notes
 
-* Version: 1.0.0
+## Version: 1.0.0
+
+## Version: 1.0.6
+- Update App name.
+
 
 # RECOMMENDED SYSTEM CONFIGURATION
 
