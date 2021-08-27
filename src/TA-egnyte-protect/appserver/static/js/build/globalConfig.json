@@ -1,8 +1,8 @@
 {
     "meta": {
         "name": "TA-egnyte-protect",
-        "displayName": "Egnyte Protect",
-        "version": "1.0.0",
+        "displayName": "Egnyte Secure & Govern",
+        "version": "1.0.6",
         "apiVersion": "3.0.0",
         "restRoot": "TA_egnyte_protect"
     },
@@ -239,7 +239,7 @@
             "services": [
                 {
                     "name": "egnyte",
-                    "title": "Egnyte Protect",
+                    "title": "Egnyte Secure & Govern",
                     "entity": [
                         {
                             "field": "name",
