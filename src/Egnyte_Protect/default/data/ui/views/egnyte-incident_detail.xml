@@ -1,4 +1,4 @@
-<form>
+<form version="1.1">
   <label>Incident Information</label>
   <init>
     <set token="id_tkn"></set>
@@ -16,7 +16,7 @@
   </search>
   <fieldset autoRun="true" submitButton="true">
     <html>
-      <a href="https://$endpoint$" target="_blank">Go to Egnyte Protect</a>
+      <a href="https://$endpoint$" target="_blank">Go to Egnyte Secure &#38; Govern</a>
     </html>
     <input id="time_id" type="time">
       <label>Time</label>
