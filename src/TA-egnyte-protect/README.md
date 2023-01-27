@@ -17,6 +17,18 @@ Egnyte Secure & Govern Add-on For Splunk integrates with Egnyte Secure & Govern 
 ## Version: 1.0.6
 - Update Add-on name.
 
+## Version: 1.0.7
+- Upgrade for AOB V1.0.4.
+
+## Version: 1.0.8
+- Updating `detected` as the default time.
+
+## Version: 1.0.9
+- App Version update in Meta
+
+## Version: 1.1.0
+- Adding Support for `Detailed` Issues data collection for Add-on.
+
 
 # RECOMMENDED SYSTEM CONFIGURATION
 
@@ -41,6 +53,15 @@ Macro configuration.
 - Set App Context to “Egnyte App for Splunk”, The macro name “egnyte_get_index” should be displayed and click on the name of the macro.
 - Macro is now in Edit Mode, Update Index value as per the Index created while setting up Add-on input. Click on “Save”.
 >The Update to Macro is required only in case the events are pushed into a separate Index.
+
+# Binary File Declaration
+
+* cli-32.exe - This file is part of setuptools and code can be found at https://pypi.org/project/setuptools/
+* cli-64.exe - This file is part of setuptools and code can be found at https://pypi.org/project/setuptools/
+* gui-64.exe - This file is part of setuptools and code can be found at https://pypi.org/project/setuptools/
+* gui-32.exe - This file is part of setuptools and code can be found at https://pypi.org/project/setuptools/
+* pvectorc.cpython-37m-x86_64-linux-gnu.so - This file is part of setuptools and code can be found at https://pypi.org/project/cPython/
+* gui.exe - This file is part of setuptools and code can be found at https://pypi.org/project/setuptools/
 
 
 # Support

@@ -17,10 +17,14 @@ Egnyte Secure & Govern delivers content classification, identifies issues, sends
 # Release Notes
 
 ## Version: 1.0.0
+- Initial Relase
 
 ## Version: 1.0.6
 - Update App name.
 
+## Version: 1.0.7
+- Adding Pie charts for Issue Severity
+- Updating timechart for Created Issues Over time.
 
 # RECOMMENDED SYSTEM CONFIGURATION
 

@@ -37,6 +37,7 @@ def collect_events(helper, ew):
     stanza = list(input_stanza.values())[0]
     session_key = helper.context_meta['session_key']
     endpoint = helper.get_arg('endpoint')
+    format_value = helper.get_arg('format')
     number_of_events = 0
     if endpoint == "US":
         base_url = tec.us_url
@@ -83,6 +84,10 @@ def collect_events(helper, ew):
     while modifiedAfter_done:
         try:
             # collecting issues from the Egnyte server
+            if format_value and "modifiedAfter" in data_url and "format" not in data_url:
+                data_url = "{}&format=full".format(data_url)
+            else:
+                data_url = "{}?format=full".format(data_url)
             data = collect_issues(helper, checkpoint.get('access_token'), data_url)
         except Exception as e:
             raise e
@@ -118,6 +123,10 @@ def collect_events(helper, ew):
                 data_url = str(base_url) + "/api/v1/issueupdates?modifiedAfter=" + str(final_modifiedAfter)
             else:  
                 data_url = str(base_url) + "/api/v1/issueupdates"
+            if format_value and "modifiedAfter" in data_url and "format" not in data_url:
+                data_url = "{}&format=full".format(data_url)
+            else:
+                data_url = "{}?format=full".format(data_url)
             try:
                 data = collect_issues(helper, checkpoint.get('access_token'), data_url)
                 if data.get("error",""):

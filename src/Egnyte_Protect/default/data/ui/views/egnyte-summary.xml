@@ -21,7 +21,7 @@
   </search>
   <fieldset submitButton="false">
     <html>
-      <a href="https://$endpoint$" target="_blank">Go to Egnyte Secure &#38; Govern</a>
+      <a href="https://$endpoint$" target="_blank">Go to Egnyte Secure &amp; Govern</a>
     </html>
     <input type="time" token="field1">
       <label></label>
@@ -93,66 +93,51 @@
   </row>
   <row>
     <panel>
-      <single>
-        <title>Open Issues - High Severity</title>
+      <title>Open Issues - High Severity</title>
+      <chart>
         <search base="baseSearch">
-          <query>| stats latest(status) as status_final,latest(severity) as severity_final by id  |  where severity_final="High" AND status_final="OPEN" | stats dc(id) as Count</query>
+          <query>| where severity = "High" AND status = "OPEN" | stats count by severity_id | </query>
         </search>
-        <option name="colorMode">none</option>
-        <option name="drilldown">all</option>
-        <option name="rangeColors">["0x53a051","0xFF6566"]</option>
-        <option name="rangeValues">[0]</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">all</option>
         <option name="refresh.display">progressbar</option>
-        <option name="useColors">1</option>
-        <drilldown>
-          <link target="_blank">/app/Egnyte_Protect/egnyte-incident_detail?form.severity_tkn=%22High%22&amp;earliest=$earliest$&amp;latest=$latest$&amp;form.status_tkn=%22OPEN%22</link>
-        </drilldown>
-      </single>
+      </chart>
     </panel>
     <panel>
-      <single>
-        <title>Open Issues - Medium Severity</title>
+      <title>Open Issues - Medium Severity</title>
+      <chart>
         <search base="baseSearch">
-          <query>| stats latest(status) as status_final,latest(severity) as severity_final by id  |  where severity_final="Medium" AND status_final="OPEN" | stats dc(id) as Count</query>
+          <query>| where severity = "Medium" AND status = "OPEN" | stats count by severity_id | </query>
         </search>
-        <option name="drilldown">all</option>
-        <option name="rangeColors">["0x53a051","0xFEC946"]</option>
-        <option name="rangeValues">[0]</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">all</option>
         <option name="refresh.display">progressbar</option>
-        <option name="useColors">1</option>
-        <drilldown>
-          <link target="_blank">/app/Egnyte_Protect/egnyte-incident_detail?form.severity_tkn=%22Medium%22&amp;earliest=$earliest$&amp;latest=$latest$&amp;form.status_tkn=%22OPEN%22</link>
-        </drilldown>
-      </single>
+      </chart>
     </panel>
     <panel>
-      <single>
-        <title>Open Issues - Low Severity</title>
+      <title>Open Issues - Low Severity</title>
+      <chart>
         <search base="baseSearch">
-          <query>| stats latest(status) as status_final,latest(severity) as severity_final by id  |  where severity_final="Low" AND status_final="OPEN" | stats dc(id) as Count</query>
+          <query>| where severity = "Low" AND status = "OPEN" | stats count by severity_id | </query>
         </search>
-        <option name="drilldown">all</option>
-        <option name="rangeColors">["0x53a051","0xB7C7DE"]</option>
-        <option name="rangeValues">[0]</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">all</option>
         <option name="refresh.display">progressbar</option>
-        <option name="useColors">1</option>
-        <drilldown>
-          <link target="_blank">/app/Egnyte_Protect/egnyte-incident_detail?form.severity_tkn=%22Low%22&amp;earliest=$earliest$&amp;latest=$latest$&amp;form.status_tkn=%22OPEN%22</link>
-        </drilldown>
-      </single>
+      </chart>
     </panel>
   </row>
   <row>
     <panel>
-      <title>Incidents Reported over Time</title>
+      <title>Created Incidents Over Time</title>
       <chart>
-        <search base="baseSearch">
-          <query>|  eval Detected=strftime(detected/1000,"%Y-%m-%d %H:%M:%S") |  chart dc(id) as count OVER Detected by severity</query>
+        <search>
+          <query>`egnyte_get_index` | timechart dc(id) as count by severity</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
         </search>
         <option name="charting.chart">area</option>
         <option name="charting.drilldown">none</option>
         <option name="refresh.display">progressbar</option>
-        <option name="charting.fieldColors">{"High":0xFF6566,"Medium":0xFEC946,"Low":0xB7C7DE}</option>
       </chart>
     </panel>
   </row>
@@ -161,7 +146,7 @@
       <title>Open Issues By Severity</title>
       <chart>
         <search base="baseSearch">
-          <query>|search status=OPEN | stats dc(id) as count by severity</query>
+          <query>| search status=OPEN | stats dc(id) as count by severity</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>

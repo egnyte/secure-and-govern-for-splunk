@@ -39,6 +39,13 @@ fields = [
         encrypted=False,
         default='US',
         validator=None
+    ),
+    field.RestField(
+        'format',
+        required=False,
+        encrypted=False,
+        default=None,
+        validator=None
     ), 
     field.RestField(
         'global_account',
