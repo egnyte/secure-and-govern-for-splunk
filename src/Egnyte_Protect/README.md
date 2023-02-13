@@ -11,7 +11,7 @@ Egnyte Secure & Govern delivers content classification, identifies issues, sends
 # REQUIREMENTS
 
 * Egnyte Secure & Govern Add-on For Splunk
-* Splunk version 7.2.x, 7.3.x , 8.x.x 
+* Splunk version 7.2.x, 7.3.x , 8.x.x
 * This application should be installed on Search Head.
 
 # Release Notes
@@ -37,4 +37,3 @@ If you don't see these sourcetypes, run following query to find out if any alert
 
 # Support
 Customers can file issues by sending emails to : splunk.support@egnyte.com
-

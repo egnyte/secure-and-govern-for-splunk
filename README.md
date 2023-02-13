@@ -15,7 +15,7 @@ This repo is for integrating Egnyte Protect with Splunk. There are mainly two mo
 
 - run `./start.sh` to start splunk in docker
 - open localhost:8000
-- load app files from build 
+- load app files from build
 ![sideloading apps](./sideloading.png)
 
 # App Specification Document (For Installing & Setting up Apps in Splunk)
@@ -32,7 +32,7 @@ This repo is for integrating Egnyte Protect with Splunk. There are mainly two mo
     - static : this folder consists default icons of the App.
 - **Egnyte Add-on for Splunk**
     - appserver : All the UI specific assets are generated in this folder.
-    - bin : All the binary files(python files) related to API calls are defined in this folder. 
+    - bin : All the binary files(python files) related to API calls are defined in this folder.
     - default : All the default configurations of the App.
         - app.conf --> default App configuration file, for example Application version
         - inputs.conf --> For storing Add-on input details once it's created
@@ -115,7 +115,7 @@ We can create the Package of the Splunk using the Splunk CLi.
     ```
     $ cd <<Git Folder>>/src/
     $ docker cp . <<Docker ID>>:/opt/splunk/etc/apps/
-    ```    
+    ```
 - Change the ownership of the Apps
     ```
     $ chown -R splunk:splunk /opt/splunk/etc/apps/TA-egnyte-protect
@@ -152,4 +152,4 @@ OCI runtime exec failed: exec failed: container_linux.go:344: starting container
 ERROR: Couldn't read "/opt/splunk/etc/splunk-launch.conf" -- maybe $SPLUNK_HOME or $SPLUNK_ETC is set wrong?
 ```
 ### ***---ACTUAL VERSION---***
-As ```.spl``` files are technically ```.tar.gz``` files there is no need to use Splunk binary to create them. It's enough to use just ```tar``` and ```gzip```. However we need to make sure that all files/folders in archive have proper permissions required by Splunkbase. 
+As ```.spl``` files are technically ```.tar.gz``` files there is no need to use Splunk binary to create them. It's enough to use just ```tar``` and ```gzip```. However we need to make sure that all files/folders in archive have proper permissions required by Splunkbase.
