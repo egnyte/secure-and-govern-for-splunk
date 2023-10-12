@@ -11,6 +11,7 @@ import requests
 from ta_egnyte_protect_utility import *
 import ta_egnyte_constants as tec
 import splunk.rest as rest
+import splunklib.client as client
 APP_NAME = os.path.abspath(__file__).split(os.sep)[-3]
 
 def validate_input(helper, definition):
@@ -46,6 +47,9 @@ def collect_events(helper, ew):
     auth_url = str(base_url) + "/oauth2/token"
     
     checkpoint = get_checkpoint(helper, stanza_name) or dict()
+
+    service = client.connect(host='localhost', port=8089, token=session_key)
+
     # Going to take access/refresh token if it is not available in the checkpoint
     if not checkpoint or str(checkpoint.get("code")) != str(code):
         helper.log_info("Checkpoint is not available or code changed from setup page. Hence requesting new access token.")
@@ -66,10 +70,19 @@ def collect_events(helper, ew):
                                 session_key, postargs=postargs)
                 return
             else:
-                state["access_token"] = response.get("access_token")
+                # state["access_token"] = response.get("access_token")
                 state["refresh_token"] = response.get("refresh_token")
                 state["code"] = code
                 set_checkpoint(helper, stanza_name, state)
+
+                storage_passwords = service.storage_passwords
+                try:
+                    # Retrieve existing password. This is safeguard in case of any racing condition.
+                    # updating token is not necessary as it is deterministic based on client_id, secret & domain
+                    body = storage_passwords.get(stanza_name + "/" + code)["body"]
+                except HTTPError:
+                    storage_passwords.create(response.get("access_token"), stanza_name + "/" + code)
+                    helper.log_debug("New storage password entry created.")
         except Exception as e:
             raise e
     checkpoint = get_checkpoint(helper, stanza_name) or dict()
@@ -81,6 +94,9 @@ def collect_events(helper, ew):
         data_url = str(base_url) + "/api/v1/issueupdates"
     data = {}
     modifiedAfter_done = True
+
+    token = get_token_from_secure_password(stanza_name, code, service, helper, checkpoint, checkpoint)
+
     while modifiedAfter_done:
         try:
             # collecting issues from the Egnyte server
@@ -88,7 +104,7 @@ def collect_events(helper, ew):
                 data_url = "{}&format=full".format(data_url)
             else:
                 data_url = "{}?format=full".format(data_url)
-            data = collect_issues(helper, checkpoint.get('access_token'), data_url)
+            data = collect_issues(helper, token, data_url)
         except Exception as e:
             raise e
         # retrying to get new access token if token is expired
