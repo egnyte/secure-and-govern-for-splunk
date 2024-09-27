@@ -1,0 +1,57 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/jazzband/pip-tools
+    rev: 7.3.0
+    hooks:
+      - id: pip-compile
+        name: pip-compile subscriber/requirements.in
+        args: [--strip-extras, ./src/subscriber/requirements.in]
+        files: ^.*requirements\.(in|txt)$
+      - id: pip-compile
+        name: pip-compile dispatcher/requirements.in
+        args: [--strip-extras, ./src/dispatcher/requirements.in]
+        files: ^.*requirements\.(in|txt)$
+      - id: pip-compile
+        name: pip-compile requirements-dev.in
+        args: [--strip-extras, ./requirements-dev.in]
+        files: ^requirements-dev\.(in|txt)$
+  - repo: local
+    hooks:
+      - id: openapi
+        name: openapi-generator
+        language: system
+        entry: just
+        pass_filenames: false
+        args: [openapi]
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.1.12'
+    hooks:
+      - id: ruff
+      - id: ruff-format
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        args: [ --implicit-optional, --ignore-missing-imports, --install-types, --non-interactive, --check-untyped-defs]
+        additional_dependencies:
+          # Pin because a bug in types-protobuf https://github.com/python/typeshed/issues/11254
+          - types-protobuf==4.24.0.4
+          - pydantic
+          - sqlalchemy[mypy]
